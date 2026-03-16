@@ -6,6 +6,7 @@ import { AlertCircle, Clock, CheckCircle2, Banknote, XCircle } from "lucide-reac
 export type AdminClaim = {
   id: string;
   worker_id: string;
+  policy_id: string;
   worker_name: string; // Joined from workers table
   zone: string; // Joined from workers table
   trigger_type: string;
@@ -15,29 +16,40 @@ export type AdminClaim = {
   triggered_at: string;
 };
 
-const statusConfig = {
-  pending: { icon: Clock, label: "Pending", className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-  approved: { icon: CheckCircle2, label: "Approved", className: "bg-blue-100 text-blue-800 border-blue-200" },
-  paid: { icon: Banknote, label: "Paid", className: "bg-green-100 text-green-800 border-green-200" },
-  rejected: { icon: XCircle, label: "Rejected", className: "bg-red-100 text-red-800 border-red-200" },
+const statusConfig: Record<string, { icon: any; label: string; variant: any }> = {
+  pending: { icon: Clock, label: "Pending", variant: "pending" },
+  approved: { icon: CheckCircle2, label: "Approved", variant: "secondary" },
+  paid: { icon: Banknote, label: "Paid", variant: "paid" },
+  rejected: { icon: XCircle, label: "Rejected", variant: "rejected" },
 };
 
-export function ClaimsTable({ claims }: { claims: AdminClaim[] }) {
+export function ClaimsTable({ 
+  claims, 
+  selectedCity, 
+  onSelectCity 
+}: { 
+  claims: AdminClaim[], 
+  selectedCity?: string, 
+  onSelectCity?: (city: string, policyId: string) => void 
+}) {
   return (
-    <Card className="border border-border shadow-sm overflow-hidden">
-      <div className="p-4 border-b border-sidebar-border bg-slate-50">
-        <h2 className="text-sm font-bold text-slate-800">Recent Claims</h2>
-        <p className="text-xs text-slate-500 mt-0.5">Live parametric claim adjustments and fraud monitoring</p>
+    <Card className="border border-[#BAE6FD] shadow-lg shadow-[#0EA5E9]/5 overflow-hidden bg-white">
+      <div className="p-6 border-b border-[#BAE6FD] flex items-center justify-between">
+        <div>
+          <h2 className="text-sm font-bold text-[#0C1A2E]">Recent Claims</h2>
+          <p className="text-caption mt-0.5 text-[#64748B]">Live parametric claim adjustments and fraud monitoring</p>
+        </div>
+        <Badge variant="outline" className="font-bold border-[#0EA5E9] text-[#0EA5E9]">LIVE FEED</Badge>
       </div>
       <div className="overflow-x-auto">
         <Table>
-          <TableHeader className="bg-slate-50/50">
-            <TableRow>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Worker / Zone</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Trigger</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Payout</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Fraud Score</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Status</TableHead>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent border-b border-[#BAE6FD] bg-[#F0F9FF]">
+              <TableHead className="text-label text-[#0EA5E9] py-4">Worker / Zone</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Trigger</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Payout</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Fraud Score</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4 text-right">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -45,30 +57,40 @@ export function ClaimsTable({ claims }: { claims: AdminClaim[] }) {
               const config = statusConfig[claim.status];
               const isHighFraud = claim.fraud_score > 0.7;
               
+              const isSelected = claim.zone === selectedCity;
+              
               return (
-                <TableRow key={claim.id} className={`${isHighFraud ? "bg-red-50" : ""} hover:bg-slate-50 transition-colors`}>
+                <TableRow 
+                  key={claim.id} 
+                  className={`
+                    cursor-pointer transition-all border-l-4 group border-b border-[#F0F9FF]
+                    ${isHighFraud ? "bg-red-50" : ""} 
+                    ${isSelected ? "bg-[#E0F2FE] border-l-[#0EA5E9]" : "border-l-transparent hover:bg-[#F0F9FF]"}
+                  `}
+                  onClick={() => onSelectCity?.(claim.zone, claim.policy_id)}
+                >
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="text-sm font-bold text-slate-900">{claim.worker_name}</span>
-                      <span className="text-xs text-slate-500">{claim.zone}</span>
+                      <span className="text-[14px] font-bold text-[#0C1A2E] group-hover:text-[#0EA5E9] transition-colors">{claim.worker_name}</span>
+                      <span className="text-[12px] text-[#64748B]">{claim.zone}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-sm capitalize text-slate-700">
+                  <TableCell className="text-[13px] font-medium capitalize text-[#0C1A2E]">
                     {claim.trigger_type.replace("_", " ")}
                   </TableCell>
-                  <TableCell className="font-mono text-sm font-bold text-slate-900">
+                  <TableCell className="font-mono-data text-[14px] font-bold text-[#0EA5E9]">
                     ₹{claim.payout_amount.toLocaleString()}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1.5">
-                      <span className={`text-sm font-mono font-bold ${isHighFraud ? "text-red-600" : "text-slate-600"}`}>
+                      <span className={`text-[14px] font-mono-data font-bold ${isHighFraud ? "text-red-600" : "text-[#64748B]"}`}>
                         {claim.fraud_score.toFixed(2)}
                       </span>
-                      {isHighFraud && <AlertCircle className="h-3.5 w-3.5 text-red-500" />}
+                      {isHighFraud && <AlertCircle className="h-4 w-4 text-red-600 animate-pulse" />}
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className={`${config.className} font-medium`}>
+                  <TableCell className="text-right">
+                    <Badge variant={config.variant} className="px-3">
                       {config.label}
                     </Badge>
                   </TableCell>
@@ -77,8 +99,16 @@ export function ClaimsTable({ claims }: { claims: AdminClaim[] }) {
             })}
             {claims.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-12 text-slate-400">
-                  No claims found.
+                <TableCell colSpan={5} className="text-center py-24">
+                  <div className="flex flex-col items-center justify-center gap-4">
+                    <div className="h-16 w-16 bg-[#F0F9FF] border border-[#BAE6FD] rounded-full flex items-center justify-center text-[#BAE6FD]">
+                      <AlertCircle className="h-8 w-8 opacity-40" />
+                    </div>
+                    <div className="flex flex-col items-center max-w-[280px]">
+                      <p className="text-[14px] font-bold text-[#0C1A2E]">No trigger events yet</p>
+                      <p className="text-caption text-center text-[#64748B]">Run a simulation or wait for weather updates to see live parametric claims.</p>
+                    </div>
+                  </div>
                 </TableCell>
               </TableRow>
             )}

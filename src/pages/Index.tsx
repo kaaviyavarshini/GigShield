@@ -6,35 +6,40 @@ const Index = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="max-w-lg mx-auto px-6 text-center">
-        <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3 py-1.5 rounded-full text-sm font-medium mb-6">
+    <div className="min-h-screen bg-[#F0F9FF] flex items-center justify-center relative overflow-hidden">
+      {/* Decorative Blur Elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#0EA5E9]/5 rounded-full blur-[100px] -mr-48 -mt-48" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#0EA5E9]/10 rounded-full blur-[100px] -ml-48 -mb-48" />
+
+      <div className="max-w-xl mx-auto px-6 text-center relative z-10">
+        <div className="inline-flex items-center gap-2 bg-[#E0F2FE] text-[#0EA5E9] border border-[#BAE6FD] px-4 py-2 rounded-full text-sm font-black uppercase tracking-widest mb-8 shadow-sm">
           <Shield className="h-4 w-4" />
           GigShield
         </div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3 tracking-tight">
-          Parametric Insurance for Gig Workers
+        <h1 className="text-4xl sm:text-5xl font-black text-[#0C1A2E] mb-6 tracking-tight leading-tight">
+          Parametric Insurance <br />
+          <span className="text-[#0EA5E9]">for Gig Workers</span>
         </h1>
-        <p className="text-muted-foreground mb-8 leading-relaxed">
-          AI-powered, real-time coverage that pays out automatically when disruptions hit — no paperwork, no delays.
+        <p className="text-[16px] font-medium text-[#64748B] mb-10 leading-relaxed max-w-md mx-auto">
+          AI-powered, real-time coverage that pays out automatically when disruptions hit — <strong className="text-[#0C1A2E]">no paperwork, no delays.</strong>
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             onClick={() => navigate("/worker")}
-            className="h-12 px-6 bg-worker text-worker-foreground hover:bg-worker/90"
+            className="h-14 px-8 bg-[#0EA5E9] text-white hover:bg-[#0284C7] rounded-2xl font-black uppercase tracking-wider shadow-xl shadow-[#0EA5E9]/20 transition-all active:scale-95 flex items-center gap-3"
           >
-            <Zap className="mr-2 h-4 w-4" />
+            <Zap className="h-5 w-5" />
             Worker App
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="h-5 w-5" />
           </Button>
           <Button
             onClick={() => navigate("/admin")}
             variant="outline"
-            className="h-12 px-6"
+            className="h-14 px-8 border-[#BAE6FD] bg-white text-[#0C1A2E] hover:bg-[#F0F9FF] rounded-2xl font-black uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center gap-3"
           >
-            <Users className="mr-2 h-4 w-4" />
+            <Users className="h-5 w-5" />
             Admin Dashboard
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="h-5 w-5" />
           </Button>
         </div>
       </div>

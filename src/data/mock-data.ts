@@ -82,7 +82,7 @@ export const weeklyPremiumData = [
 ];
 
 export const claimsByType = [
-  { type: "Weather", count: 156, color: "hsl(221, 83%, 53%)" },
+  { type: "Weather", count: 156, color: "hsl(199, 92%, 60%)" },
   { type: "Accident", count: 89, color: "hsl(0, 84%, 60%)" },
   { type: "Health", count: 62, color: "hsl(160, 84%, 39%)" },
   { type: "Equipment", count: 35, color: "hsl(38, 92%, 50%)" },

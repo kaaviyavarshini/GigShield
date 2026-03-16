@@ -44,28 +44,28 @@ export default function AdminPolicies() {
 
   return (
     <AdminLayout title="Insurance Policies" subtitle="Weekly coverage oversight" lastUpdated={new Date()}>
-      <Card className="border border-slate-200 shadow-sm overflow-hidden">
+      <Card className="border border-[#BAE6FD] shadow-lg shadow-[#0EA5E9]/5 overflow-hidden bg-white">
         <Table>
-          <TableHeader className="bg-slate-50/50">
-            <TableRow>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Worker</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Period</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Premium</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Coverage</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Status</TableHead>
+          <TableHeader className="bg-[#F0F9FF] border-b border-[#BAE6FD]">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="text-label text-[#0EA5E9] py-4">Worker</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Period</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Premium</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Coverage</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {policies.map((p) => (
-              <TableRow key={p.id} className="hover:bg-slate-50 transition-colors">
-                <TableCell className="font-medium text-slate-900">{p.workers?.name}</TableCell>
-                <TableCell className="text-xs text-slate-500">
+              <TableRow key={p.id} className="hover:bg-[#F0F9FF] transition-colors border-b border-[#F0F9FF]">
+                <TableCell className="font-bold text-[#0C1A2E]">{p.workers?.name}</TableCell>
+                <TableCell className="text-[12px] text-[#64748B] font-medium">
                   {p.week_start} to {p.week_end}
                 </TableCell>
-                <TableCell className="font-mono font-bold text-slate-900">₹{p.weekly_premium}</TableCell>
-                <TableCell className="font-mono text-emerald-600 font-bold">₹{p.coverage_amount}</TableCell>
+                <TableCell className="font-mono-data font-bold text-[#0EA5E9]">₹{p.weekly_premium.toLocaleString()}</TableCell>
+                <TableCell className="font-mono-data text-[#0EA5E9] font-bold">₹{p.coverage_amount.toLocaleString()}</TableCell>
                 <TableCell>
-                  <Badge className={p.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-800'}>
+                  <Badge variant={p.status === 'active' ? 'secondary' : 'outline'} className={`font-bold ${p.status === 'active' ? 'bg-[#E0F2FE] text-[#0EA5E9] border-[#BAE6FD]' : 'bg-gray-50 text-[#64748B] border-gray-100'}`}>
                     {p.status}
                   </Badge>
                 </TableCell>

@@ -145,51 +145,57 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-slate-50 md:max-w-md md:mx-auto md:border-x shadow-sm">
-      <div className="bg-[#128C7E] text-white p-4 shadow-md flex items-center gap-3 space-y-0 relative z-10">
-        <div className="bg-white/20 p-2 rounded-full">
-          <Bot size={24} />
+    <div className="flex flex-col h-screen bg-[#F8FBFF] md:max-w-md md:mx-auto md:border-x border-[#BAE6FD] shadow-2xl relative overflow-hidden">
+      {/* Premium Header */}
+      <div className="bg-[#0EA5E9] text-white p-6 shadow-lg flex items-center gap-4 relative z-10 rounded-b-3xl">
+        <div className="bg-white/20 p-2.5 rounded-2xl backdrop-blur-md border border-white/20">
+          <Bot size={28} className="animate-bounce" />
         </div>
         <div>
-          <h1 className="font-bold text-lg leading-tight">GigShield Assistant</h1>
-          <p className="text-xs text-white/80">Online</p>
+          <h1 className="font-black text-[18px] tracking-tight leading-tight">GigShield Assistant</h1>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <div className="h-1.5 w-1.5 bg-emerald-400 rounded-full animate-pulse" />
+            <p className="text-[10px] uppercase font-bold tracking-widest text-white/80">AI Guide Online</p>
+          </div>
         </div>
       </div>
 
+      {/* Chat Area */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#E5DDD5]"
-        style={{ backgroundImage: `url('https://transparenttextures.com/patterns/cubes.png')` }}
+        className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FBFF]"
+        style={{ backgroundImage: `url('https://transparenttextures.com/patterns/cubes.png')`, backgroundBlendMode: 'soft-light' }}
       >
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} animate-in fade-in slide-in-from-bottom-2 duration-300`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl p-3 shadow-sm ${
+              className={`max-w-[85%] rounded-[24px] p-4 shadow-md text-[14px] leading-relaxed font-semibold transition-all ${
                 msg.sender === "user"
-                  ? "bg-[#DCF8C6] text-slate-800 rounded-tr-none"
-                  : "bg-white text-slate-800 rounded-tl-none"
+                  ? "bg-[#0EA5E9] text-white rounded-tr-none shadow-[#0EA5E9]/20"
+                  : "bg-white text-[#0C1A2E] rounded-tl-none border border-[#BAE6FD] shadow-sky-900/5"
               }`}
             >
-              <p className="text-sm">{msg.text}</p>
+              <p>{msg.text}</p>
             </div>
           </div>
         ))}
         {isSubmitting && (
           <div className="flex justify-start">
-            <div className="bg-white max-w-[80%] rounded-2xl rounded-tl-none p-3 shadow-sm flex items-center gap-2 text-sm text-slate-500">
-              <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></span>
-              <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></span>
-              <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></span>
+            <div className="bg-white border border-[#BAE6FD] max-w-[80%] rounded-[24px] rounded-tl-none p-4 shadow-sm flex items-center gap-2">
+              <span className="w-2 h-2 bg-[#0EA5E9]/40 rounded-full animate-bounce"></span>
+              <span className="w-2 h-2 bg-[#0EA5E9]/40 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></span>
+              <span className="w-2 h-2 bg-[#0EA5E9]/40 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></span>
             </div>
           </div>
         )}
       </div>
 
-      <div className="bg-[#F0F0F0] p-3 border-t flex gap-2 w-full">
-        <form onSubmit={handleSend} className="flex-1 flex gap-2">
+      {/* Input Area */}
+      <div className="bg-white p-4 border-t border-[#BAE6FD] relative z-10 w-full rounded-t-3xl shadow-[0_-10px_20px_rgba(14,165,233,0.05)]">
+        <form onSubmit={handleSend} className="flex gap-3 items-center">
           <Input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
@@ -201,14 +207,14 @@ export default function Onboarding() {
               step === "earnings" ? "e.g. 5000" :
               "Processing..."
             }
-            className="rounded-full bg-white border-none py-6 shadow-sm focus-visible:ring-[#128C7E]"
+            className="rounded-[20px] bg-[#F8FBFF] border-[#BAE6FD] h-14 px-6 shadow-inner focus-visible:ring-[#0EA5E9] text-[#0C1A2E] font-bold"
           />
           <Button 
             type="submit" 
             disabled={!inputValue.trim() || step === "done" || isSubmitting}
-            className="rounded-full w-12 h-12 p-0 bg-[#128C7E] hover:bg-[#075E54] flex-shrink-0"
+            className="rounded-[20px] w-14 h-14 p-0 bg-[#0EA5E9] hover:bg-[#0284C7] shadow-lg shadow-[#0EA5E9]/30 border-none transition-all active:scale-90"
           >
-            <Send size={20} className="ml-1" />
+            <Send size={22} className="ml-1" />
           </Button>
         </form>
       </div>

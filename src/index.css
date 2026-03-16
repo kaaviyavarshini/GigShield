@@ -6,53 +6,51 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 215 25% 17%;
+    --background: 199 89% 97%; /* #F0F9FF - very light sky blue */
+    --foreground: 217 58% 11%; /* #0C1A2E - very dark navy */
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 17%;
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 217 58% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 17%;
+    --popover-foreground: 217 58% 11%;
 
-    --primary: 222 47% 11%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 199 89% 48%; /* #0EA5E9 - sky blue */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 199 89% 94%; /* #E0F2FE */
+    --secondary-foreground: 199 89% 48%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 199 89% 94%;
+    --muted-foreground: 215 16% 35%; /* #475569 - secondary text */
 
-    --accent: 217 91% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 199 89% 94%;
+    --accent-foreground: 199 89% 48%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%; /* #DC2626 */
+    --destructive-foreground: 210 40% 98%;
 
-    --success: 160 84% 39%;
-    --success-foreground: 0 0% 100%;
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
+    --warning: 31 93% 44%;
+    --warning-foreground: 210 40% 98%;
 
-    --worker-primary: 221 83% 53%;
-    --worker-primary-foreground: 0 0% 100%;
+    --navy: 217 58% 11%;
+    --border: 199 89% 86%; /* #BAE6FD */
+    --input: 199 89% 86%;
+    --ring: 199 89% 48%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    --radius: 12px;
 
-    --radius: 0.5rem;
-
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 40% 96%;
-    --sidebar-primary: 221 83% 53%;
+    --sidebar-background: 199 89% 94%; /* #E0F2FE */
+    --sidebar-foreground: 215 16% 35%; /* #475569 */
+    --sidebar-primary: 199 89% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 33% 17%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 217 33% 17%;
-    --sidebar-ring: 221 83% 53%;
+    --sidebar-accent: 199 89% 86%;
+    --sidebar-accent-foreground: 199 89% 48%;
+    --sidebar-border: 199 89% 74%; /* #7DD3FC */
+    --sidebar-ring: 199 89% 48%;
   }
 }
 
@@ -62,12 +60,74 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-sans text-[14px] antialiased leading-relaxed;
+  }
+
+  h1 {
+    @apply text-[28px] font-bold text-[#0C1A2E] tracking-tight;
+  }
+
+  h2, h3 {
+    @apply text-[18px] font-semibold text-[#0C1A2E] tracking-tight;
   }
 }
 
 @layer utilities {
   .font-mono-data {
     font-family: 'JetBrains Mono', monospace;
+  }
+
+  .text-caption {
+    @apply text-[12px] text-[#64748B];
+  }
+
+  .text-label {
+    @apply text-[11px] uppercase tracking-wider font-semibold text-[#0EA5E9];
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #E0F2FE;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #7DD3FC;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0EA5E9;
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .stagger-fade-in > * {
+    opacity: 0;
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  .stagger-fade-in > *:nth-child(1) { animation-delay: 40ms; }
+  .stagger-fade-in > *:nth-child(2) { animation-delay: 80ms; }
+  .stagger-fade-in > *:nth-child(3) { animation-delay: 120ms; }
+  .stagger-fade-in > *:nth-child(4) { animation-delay: 160ms; }
+  .stagger-fade-in > *:nth-child(5) { animation-delay: 200ms; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }

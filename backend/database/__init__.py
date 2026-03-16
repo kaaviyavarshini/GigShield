@@ -18,6 +18,7 @@ if not DATABASE_URL:
     DATABASE_URL = "sqlite:///./database.db"
 
 # Create the SQLAlchemy engine
+print(f"DEBUG: Using DATABASE_URL: {DATABASE_URL}")
 engine = create_engine(DATABASE_URL, echo=True)
 
 def create_db_and_tables():

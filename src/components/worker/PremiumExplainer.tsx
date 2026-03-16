@@ -14,31 +14,31 @@ interface Breakdown {
 
 export function PremiumExplainer({ breakdown }: { breakdown: Breakdown }) {
   return (
-    <Card className="mt-2 p-4 border border-border animate-fade-in">
-      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-        SHAP Explainability
+    <Card className="mt-3 p-5 border border-[#BAE6FD] bg-white shadow-lg shadow-[#0EA5E9]/5 animate-fade-in rounded-2xl">
+      <h3 className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.2em] mb-4">
+        AI Risk Breakdown (SHAP)
       </h3>
-      <div className="space-y-2.5">
+      <div className="space-y-4">
         {breakdown.shapValues.map((sv) => (
-          <div key={sv.feature} className="flex items-center gap-3">
+          <div key={sv.feature} className="flex items-center gap-4">
             <div className="flex-1">
-              <div className="text-sm text-foreground">{sv.feature}</div>
+              <div className="text-[13px] font-bold text-[#0C1A2E]">{sv.feature}</div>
             </div>
-            <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
+            <div className="w-28 h-2 bg-[#F0F9FF] rounded-full overflow-hidden border border-[#BAE6FD]/30">
               <div
-                className={`h-full rounded-full ${sv.value > 0 ? "bg-destructive/70" : "bg-success/70"}`}
-                style={{ width: `${Math.abs(sv.value) * 200}%` }}
+                className={`h-full rounded-full ${sv.value > 0 ? "bg-amber-500" : "bg-[#0EA5E9]"}`}
+                style={{ width: `${Math.min(100, Math.abs(sv.value) * 300)}%` }}
               />
             </div>
-            <span className={`text-xs font-mono-data font-medium w-12 text-right ${sv.value > 0 ? "text-destructive" : "text-success"}`}>
+            <span className={`text-[12px] font-mono-data font-black w-12 text-right ${sv.value > 0 ? "text-amber-600" : "text-[#0EA5E9]"}`}>
               {sv.value > 0 ? "+" : ""}{(sv.value * 100).toFixed(0)}%
             </span>
           </div>
         ))}
       </div>
-      <div className="mt-4 pt-3 border-t border-border flex justify-between items-baseline">
-        <span className="text-xs text-muted-foreground">Your weekly premium</span>
-        <span className="text-lg font-bold font-mono-data text-foreground">₹{breakdown.total}</span>
+      <div className="mt-6 pt-4 border-t border-[#F0F9FF] flex justify-between items-center">
+        <span className="text-[11px] font-bold text-[#64748B] uppercase tracking-wider">Weekly Premium</span>
+        <span className="text-xl font-black font-mono-data text-[#0C1A2E]">₹{breakdown.total.toLocaleString()}</span>
       </div>
     </Card>
   );

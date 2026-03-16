@@ -17,10 +17,10 @@ export type RealClaim = {
 };
 
 const statusConfig: Record<ClaimStatus, { icon: any; label: string; className: string }> = {
-  pending: { icon: Clock, label: "Pending", className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-  approved: { icon: CheckCircle2, label: "Approved", className: "bg-blue-100 text-blue-800 border-blue-200" },
-  paid: { icon: Banknote, label: "Paid", className: "bg-green-100 text-green-800 border-green-200" },
-  rejected: { icon: XCircle, label: "Rejected", className: "bg-red-100 text-red-800 border-red-200" },
+  pending: { icon: Clock, label: "Pending", className: "bg-amber-50 text-amber-600 border-amber-100" },
+  approved: { icon: CheckCircle2, label: "Approved", className: "bg-[#F0F9FF] text-[#0EA5E9] border-[#BAE6FD]" },
+  paid: { icon: Banknote, label: "Paid", className: "bg-emerald-50 text-emerald-600 border-emerald-100" },
+  rejected: { icon: XCircle, label: "Rejected", className: "bg-rose-50 text-rose-600 border-rose-100" },
 };
 
 const triggerTypeFormatters: Record<string, string> = {
@@ -42,22 +42,22 @@ export function WorkerClaimCard({ claim }: { claim: RealClaim }) {
   });
 
   return (
-    <Card className="p-4 border border-border shadow-sm">
+    <Card className="p-5 border border-[#BAE6FD] bg-white shadow-lg shadow-[#0EA5E9]/5 rounded-2xl animate-fade-in">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-foreground">{triggerLabel}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">{dateStr}</p>
+          <p className="text-[14px] font-black text-[#0C1A2E]">{triggerLabel}</p>
+          <p className="text-[11px] font-bold text-[#64748B] mt-1">{dateStr}</p>
         </div>
-        <Badge className={config.className} variant="outline">
-          <Icon className="h-3 w-3 mr-1" />
+        <Badge className={`${config.className} font-black text-[10px] uppercase px-2 py-0.5 rounded-full border shadow-sm`} variant="outline">
+          <Icon className="h-3 w-3 mr-1.5" />
           {config.label}
         </Badge>
       </div>
-      <div className="mt-3 flex items-center justify-between">
-        <span className="text-lg font-semibold font-mono text-foreground">₹{claim.payout_amount}</span>
+      <div className="mt-4 flex items-center justify-between pt-4 border-t border-[#F0F9FF]">
+        <span className="text-xl font-black font-mono-data text-[#0EA5E9]">₹{claim.payout_amount.toLocaleString()}</span>
         {claim.fraud_score > 0.7 && claim.status !== "rejected" && (
-          <span className="text-xs text-red-500 flex items-center">
-            <AlertTriangle className="h-3 w-3 mr-1" /> Under Review
+          <span className="text-[11px] font-black text-rose-500 uppercase flex items-center tracking-widest">
+            <AlertTriangle className="h-3 w-3 mr-1.5" /> Under Review
           </span>
         )}
       </div>

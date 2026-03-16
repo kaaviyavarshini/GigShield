@@ -6,6 +6,13 @@ import { DisruptionTable, DisruptionEvent } from "@/components/admin/DisruptionT
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { TriggerSimulation } from "@/components/admin/TriggerSimulation";
+import { TriggerEventsTable, TriggerEvent } from "@/components/admin/TriggerEventsTable";
+import { saveTriggerEvent } from "@/lib/saveTriggerEvent";
+import { useWeather } from "@/hooks/useWeather";
+import { AQIWidget } from "@/components/AQIWidget";
+import { ForecastWidget } from "@/components/ForecastWidget";
+import { WeatherWidget } from "@/components/WeatherWidget";
 
 const AdminDashboard = () => {
   const [metrics, setMetrics] = useState<AdminMetrics>({
@@ -16,8 +23,13 @@ const AdminDashboard = () => {
   });
   const [claims, setClaims] = useState<AdminClaim[]>([]);
   const [disruptions, setDisruptions] = useState<DisruptionEvent[]>([]);
+  const [triggerEvents, setTriggerEvents] = useState<TriggerEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [selectedCity, setSelectedCity] = useState("Chennai");
+  const [selectedPolicyId, setSelectedPolicyId] = useState("");
+
+  const { data: weather } = useWeather(selectedCity);
 
   const fetchAdminData = async () => {
     try {
@@ -41,6 +53,7 @@ const AdminDashboard = () => {
         .select(`
           id,
           worker_id,
+          policy_id,
           trigger_type,
           payout_amount,
           fraud_score,
@@ -57,6 +70,7 @@ const AdminDashboard = () => {
       const formattedClaims: AdminClaim[] = (claimsData || []).map((c: any) => ({
         id: c.id,
         worker_id: c.worker_id,
+        policy_id: c.policy_id || "",
         worker_name: c.workers?.name || "Unknown",
         zone: c.workers?.zone || "N/A",
         trigger_type: c.trigger_type,
@@ -81,6 +95,13 @@ const AdminDashboard = () => {
         .order("recorded_at", { ascending: false })
         .limit(15);
 
+      // Fetch verified trigger events
+      const { data: triggerData } = await supabase
+        .from("trigger_events")
+        .select("*")
+        .order("triggered_at", { ascending: false })
+        .limit(10);
+
       setMetrics({
         activePolicies: policiesCount || 0,
         premiumsCollected: totalPremiums,
@@ -90,6 +111,7 @@ const AdminDashboard = () => {
 
       setClaims(formattedClaims);
       setDisruptions(disruptionData || []);
+      setTriggerEvents(triggerData || []);
       setLastUpdated(new Date());
     } catch (error) {
       console.error("Error fetching admin data:", error);
@@ -119,10 +141,10 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-slate-600 font-medium">Loading Risk Dashboard...</p>
+          <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-muted-foreground font-medium">Loading Risk Dashboard...</p>
         </div>
       </div>
     );
@@ -136,23 +158,53 @@ const AdminDashboard = () => {
     >
       <MetricCards metrics={metrics} />
       
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Recent Claims</h2>
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 stagger-fade-in">
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <h2 className="text-label">Live Claims Stream</h2>
+            <ClaimsTable 
+              claims={claims} 
+              selectedCity={selectedCity}
+              onSelectCity={(city, policyId) => {
+                setSelectedCity(city);
+                setSelectedPolicyId(policyId);
+              }}
+            />
           </div>
-          <ClaimsTable claims={claims} />
+
+          <TriggerSimulation />
+          
+          <div className="space-y-4 pt-4">
+            <h2 className="text-label">System Audit Log</h2>
+            <TriggerEventsTable events={triggerEvents} />
+          </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider">Environmental Triggers</h2>
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <h2 className="text-label">Real-time Risk Map</h2>
+            <DisruptionTable events={disruptions} />
           </div>
-          <DisruptionTable events={disruptions} />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+               <h2 className="text-label">Current Weather</h2>
+               <WeatherWidget city={selectedCity} />
+            </div>
+            <div className="space-y-4">
+               <h2 className="text-label">24h Forecast</h2>
+               <ForecastWidget city={selectedCity} />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-label">Air Quality Monitor</h2>
+            <AQIWidget city={selectedCity} policyId={selectedPolicyId} />
+          </div>
         </div>
       </div>
     </AdminLayout>
   );
-};
+}
 
 export default AdminDashboard;

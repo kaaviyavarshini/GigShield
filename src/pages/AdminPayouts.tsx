@@ -28,25 +28,25 @@ export default function AdminPayouts() {
 
   return (
     <AdminLayout title="Payouts & Settlements" subtitle="Historical transaction records" lastUpdated={new Date()}>
-      <Card className="border border-slate-200 shadow-sm overflow-hidden">
+      <Card className="border border-[#BAE6FD] shadow-lg shadow-[#0EA5E9]/5 overflow-hidden bg-white">
         <Table>
-          <TableHeader className="bg-slate-50/50">
-            <TableRow>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Worker</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Amount</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Method</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Reference</TableHead>
-              <TableHead className="text-xs uppercase font-bold text-slate-500">Paid At</TableHead>
+          <TableHeader className="bg-[#F0F9FF] border-b border-[#BAE6FD]">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="text-label text-[#0EA5E9] py-4">Worker</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Amount</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Method</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Reference</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Paid At</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {payouts.map((p) => (
-              <TableRow key={p.id}>
-                <TableCell className="font-medium">{p.workers?.name}</TableCell>
-                <TableCell className="font-mono font-bold text-emerald-600">₹{p.amount}</TableCell>
-                <TableCell className="text-sm">{p.payment_method}</TableCell>
-                <TableCell className="text-xs font-mono text-slate-500">{p.razorpay_ref}</TableCell>
-                <TableCell className="text-xs text-slate-500">{new Date(p.paid_at).toLocaleString()}</TableCell>
+              <TableRow key={p.id} className="hover:bg-[#F0F9FF] transition-colors border-b border-[#F0F9FF]">
+                <TableCell className="font-bold text-[#0C1A2E]">{p.workers?.name}</TableCell>
+                <TableCell className="font-mono-data font-bold text-[#0EA5E9]">₹{p.amount.toLocaleString()}</TableCell>
+                <TableCell className="text-[13px] text-[#0C1A2E] font-medium">{p.payment_method}</TableCell>
+                <TableCell className="text-[12px] font-mono-data text-[#64748B]">{p.razorpay_ref}</TableCell>
+                <TableCell className="text-[12px] text-[#64748B] font-medium">{new Date(p.paid_at).toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
