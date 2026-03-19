@@ -75,26 +75,25 @@ export function TriggerSimulation() {
   };
 
   return (
-    <Card className="p-8 border-[#BAE6FD] bg-white text-[#0C1A2E] shadow-xl shadow-[#0EA5E9]/5 border-2 relative overflow-hidden group">
+    <Card className="p-8 border-[#38BDF8] bg-[#0F172A] text-white shadow-[0_0_24px_rgba(56,189,248,0.12)] border relative overflow-hidden group rounded-[24px]">
       {/* Decorative background elements */}
-      <div className="absolute -top-24 -right-24 h-48 w-48 bg-[#F0F9FF] rounded-full blur-3xl group-hover:bg-[#E0F2FE] transition-colors duration-700" />
-      <div className="absolute -bottom-24 -left-24 h-48 w-48 bg-[#F0F9FF]/50 rounded-full blur-3xl" />
+      <div className="absolute -top-24 -right-24 h-48 w-48 bg-[#38BDF8]/5 rounded-full blur-3xl group-hover:bg-[#38BDF8]/10 transition-colors duration-700" />
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-[#F0F9FF] rounded-2xl border border-[#BAE6FD] shadow-sm">
-              <CloudRain className="h-7 w-7 text-[#0EA5E9]" />
+            <div className="p-3 bg-[#1E293B] rounded-2xl border border-[#334155] shadow-sm">
+              <CloudRain className="h-7 w-7 text-[#38BDF8]" />
             </div>
             <div className="flex flex-col">
-              <h3 className="text-[20px] font-black tracking-tight text-[#0C1A2E]">System Trigger Simulator</h3>
+              <h3 className="text-[20px] font-semibold tracking-tight text-[#38BDF8]">System Trigger Simulator</h3>
               <div className="flex items-center gap-2 mt-1">
-                <div className="h-2 w-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]" />
-                <span className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.2em]">Environment Ready</span>
+                <div className="h-2 w-2 bg-[#16A34A] rounded-full animate-pulse shadow-[0_0_8px_rgba(22,163,74,0.4)]" />
+                <span className="text-[10px] font-medium text-[#94A3B8] uppercase tracking-wider">Environment Ready</span>
               </div>
             </div>
           </div>
-          <Badge variant="outline" className="border-[#BAE6FD] bg-[#F0F9FF] text-[#0EA5E9] font-black px-3 py-1 rounded-full text-[11px]">
+          <Badge variant="outline" className="border-[#38BDF8]/30 bg-[#1E293B] text-[#38BDF8] font-bold px-3 py-1 rounded-full text-[11px]">
             THRESHOLD: 5mm
           </Badge>
         </div>
@@ -111,10 +110,10 @@ export function TriggerSimulation() {
           </div>
         )}
 
-        <div className="bg-[#F8FBFF] border border-[#BAE6FD] rounded-[24px] p-6 mb-8 group-hover:border-[#0EA5E9]/30 transition-colors">
-          <p className="text-[15px] text-[#475569] leading-relaxed font-medium">
-            Manually test the parametric payout logic. Current conditions in <strong className="text-[#0C1A2E] font-black">{weather?.city || "Chennai"}</strong>: 
-            <span className="ml-3 inline-flex items-center gap-2 px-4 py-1.5 bg-white rounded-full text-[#0EA5E9] border border-[#BAE6FD] font-black shadow-sm">
+        <div className="bg-[#1E293B] border border-[#334155] rounded-[24px] p-6 mb-8 transition-colors">
+          <p className="text-[15px] text-[#94A3B8] leading-relaxed font-medium">
+            Manually test the parametric payout logic. Current conditions in <strong className="text-white font-bold">{weather?.city || "Chennai"}</strong>: 
+            <span className="ml-3 inline-flex items-center gap-2 px-4 py-1.5 bg-[#0F172A] rounded-full text-[#38BDF8] border border-[#38BDF8]/20 font-bold shadow-sm">
               <CloudRain className="h-4 w-4" />
               {weather?.rainfall || 0}mm
             </span>
@@ -125,17 +124,16 @@ export function TriggerSimulation() {
           <Button 
             onClick={handleSimulate} 
             disabled={loading}
-            className="w-full h-14 text-[15px] font-black uppercase tracking-widest bg-[#0EA5E9] hover:bg-[#0284C7] text-white shadow-2xl shadow-[#0EA5E9]/20 border-none relative overflow-hidden group/btn rounded-[20px]"
+            className="w-full h-14 text-[15px] font-semibold uppercase tracking-widest bg-[#38BDF8] hover:bg-[#38BDF8]/90 text-[#0F172A] border-none relative overflow-hidden group/btn rounded-xl shimmer"
           >
             {loading ? (
-              <div className="h-6 w-6 border-[3px] border-white/30 border-t-white rounded-full animate-spin mr-2" />
+              <div className="h-6 w-6 border-[3px] border-[#0F172A]/30 border-t-[#0F172A] rounded-full animate-spin mr-2" />
             ) : (
               <div className="flex items-center">
-                <CheckCircle2 className="h-6 w-6 mr-3 group-hover/btn:scale-110 transition-transform" />
+                <CheckCircle2 className="h-6 w-6 mr-3 transition-transform" />
                 <span>Run System Simulation</span>
               </div>
             )}
-            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000 skew-x-[20deg]" />
           </Button>
 
           {tableExists === false && (

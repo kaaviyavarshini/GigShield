@@ -11,6 +11,7 @@ import AdminPolicies from "./pages/AdminPolicies.tsx";
 import AdminClaims from "./pages/AdminClaims.tsx";
 import AdminPayouts from "./pages/AdminPayouts.tsx";
 import AdminAnalytics from "./pages/AdminAnalytics.tsx";
+import AdminChatbot from "./pages/AdminChatbot.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/admin/claims" element={<AdminClaims />} />
           <Route path="/admin/payouts" element={<AdminPayouts />} />
           <Route path="/admin/analytics" element={<AdminAnalytics />} />
+          <Route path="/admin/chatbot" element={<AdminChatbot />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

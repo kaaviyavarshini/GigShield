@@ -44,24 +44,24 @@ function ForecastContent({ city, forecast, isLoading, isError }: any) {
   const hasRisk = displaySlots.some(slot => slot.rain >= RAIN_THRESHOLD);
 
   return (
-    <Card className={`relative overflow-hidden transition-all duration-500 bg-white border-[#BAE6FD] shadow-lg shadow-[#0EA5E9]/5 ${hasRisk ? "border-red-500/50 shadow-[0_0_30px_rgba(220,38,38,0.15)]" : "hover:shadow-[#0EA5E9]/10"}`}>
+    <Card className={`relative overflow-hidden transition-all duration-500 bg-white border-[#E2E8F0] shadow-sm ${hasRisk ? "border-[#DC2626] shadow-[0_0_24px_rgba(220,38,38,0.1)]" : "hover:border-[#0EA5E9]/30"}`}>
       {hasRisk && (
-        <div className="bg-red-600 text-white px-4 py-2 flex items-center gap-2 text-[12px] font-bold animate-pulse shadow-md">
-          <ShieldCheck className="w-4 h-4 fill-white text-red-600" />
+        <div className="bg-[#DC2626] text-white px-4 py-2 flex items-center gap-2 text-[12px] font-bold shadow-md">
+          <ShieldCheck className="w-4 h-4 fill-white text-[#DC2626]" />
           <span>High rain risk detected — parametric coverage active</span>
         </div>
       )}
       
       <CardHeader className="pb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-[#F0F9FF] text-[#0EA5E9] border border-[#BAE6FD]">
+          <div className="p-2.5 rounded-xl bg-[#F0F9FF] text-[#0EA5E9]">
             <CloudRain className="w-5 h-5" />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-[#0C1A2E]">24h Rain Forecast</span>
+            <span className="text-sm font-semibold text-[#0F172A]">24h Rain Forecast</span>
             <div className="flex items-center gap-2 mt-0.5">
-              <div className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_4px_rgba(16,185,129,0.5)]" />
-              <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">{city} — LIVE</span>
+              <div className="h-1.5 w-1.5 bg-[#16A34A] rounded-full animate-pulse" />
+              <span className="text-[10px] font-medium text-[#94A3B8] uppercase tracking-widest">{city} — LIVE</span>
             </div>
           </div>
         </div>
@@ -75,24 +75,24 @@ function ForecastContent({ city, forecast, isLoading, isError }: any) {
             return (
               <div 
                 key={slot.dt} 
-                className={`flex flex-col items-center p-3 rounded-2xl border transition-all duration-300 shadow-sm ${
+                className={`flex flex-col items-center p-3 rounded-xl border transition-all duration-300 ${
                   isAtRisk 
-                    ? "bg-red-50 border-red-200 shadow-[0_0_15px_rgba(220,38,38,0.08)]" 
-                    : "bg-[#F0F9FF] border-[#BAE6FD] hover:border-[#0EA5E9]/30"
+                    ? "bg-[#FEE2E2] border-[#DC2626]" 
+                    : "bg-[#F8FAFC] border-[#E2E8F0]"
                 }`}
               >
-                <span className="text-[10px] uppercase font-bold text-[#64748B] mb-2">{slot.time}</span>
+                <span className="text-[10px] uppercase font-bold text-[#94A3B8] mb-2">{slot.time}</span>
                 <img 
                   src={`https://openweathermap.org/img/wn/${slot.icon}.png`} 
                   alt="weather" 
                   className="w-10 h-10 -my-1"
                 />
                 <div className="flex items-baseline gap-0.5 mt-1">
-                  <span className={`text-lg font-extrabold ${isAtRisk ? "text-red-600" : "text-[#0C1A2E]"}`}>{slot.temp}</span>
-                  <span className="text-[10px] font-bold text-[#64748B]">°</span>
+                  <span className={`text-lg font-bold ${isAtRisk ? "text-[#DC2626]" : "text-[#0F172A]"}`}>{slot.temp}</span>
+                  <span className="text-[10px] font-medium text-[#94A3B8]">°</span>
                 </div>
-                <div className={`text-[12px] font-bold mt-1 ${isAtRisk ? "text-red-600" : "text-[#0EA5E9]"}`}>
-                  {slot.rain.toFixed(1)}<span className="text-[9px] ml-0.5 text-[#64748B]">mm</span>
+                <div className={`text-[12px] font-semibold mt-1 ${isAtRisk ? "text-[#DC2626]" : "text-[#0EA5E9]"}`}>
+                  {slot.rain.toFixed(1)}<span className="text-[9px] ml-0.5 text-[#94A3B8]">mm</span>
                 </div>
                 {isAtRisk && (
                   <div className="h-1.5 w-full bg-red-100 rounded-full mt-2 overflow-hidden">

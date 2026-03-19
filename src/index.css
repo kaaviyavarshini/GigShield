@@ -6,50 +6,43 @@
 
 @layer base {
   :root {
-    --background: 199 89% 97%; /* #F0F9FF - very light sky blue */
-    --foreground: 217 58% 11%; /* #0C1A2E - very dark navy */
+    --background: 210 40% 98%; /* #F8FAFC - main content bg */
+    --foreground: 222 47% 11%; /* #0F172A - dark navy text */
 
     --card: 0 0% 100%; /* #FFFFFF */
-    --card-foreground: 217 58% 11%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 217 58% 11%;
+    --popover-foreground: 222 47% 11%;
 
     --primary: 199 89% 48%; /* #0EA5E9 - sky blue */
-    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 199 89% 94%; /* #E0F2FE */
-    --secondary-foreground: 199 89% 48%;
+    --secondary: 210 40% 96.1%; /* #F1F5F9 */
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 199 89% 94%;
-    --muted-foreground: 215 16% 35%; /* #475569 - secondary text */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 20.2% 65.1%; /* #94A3B8 */
 
-    --accent: 199 89% 94%;
-    --accent-foreground: 199 89% 48%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 72% 51%; /* #DC2626 */
+    --destructive: 0 84.2% 60.2%; /* #DC2626 */
     --destructive-foreground: 210 40% 98%;
 
-    --success: 142 76% 36%;
-    --success-foreground: 210 40% 98%;
-
-    --warning: 31 93% 44%;
-    --warning-foreground: 210 40% 98%;
-
-    --navy: 217 58% 11%;
-    --border: 199 89% 86%; /* #BAE6FD */
-    --input: 199 89% 86%;
+    --border: 214.3 31.8% 91.4%; /* #E2E8F0 */
+    --input: 214.3 31.8% 91.4%;
     --ring: 199 89% 48%;
 
     --radius: 12px;
 
-    --sidebar-background: 199 89% 94%; /* #E0F2FE */
-    --sidebar-foreground: 215 16% 35%; /* #475569 */
-    --sidebar-primary: 199 89% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 199 89% 86%;
-    --sidebar-accent-foreground: 199 89% 48%;
-    --sidebar-border: 199 89% 74%; /* #7DD3FC */
+    --sidebar-background: 222 47% 11%; /* #0F172A - dark navy sidebar */
+    --sidebar-foreground: 215 20.2% 65.1%; /* #94A3B8 - inactive nav items */
+    --sidebar-primary: 199 89% 48%; /* #0EA5E9 */
+    --sidebar-primary-foreground: 222 47% 11%; /* #0F172A - active nav item text */
+    --sidebar-accent: 217 33% 17%; /* #1E293B - hover background */
+    --sidebar-accent-foreground: 210 40% 98%; /* #F1F5F9 - hover text */
+    --sidebar-border: 222 47% 11%; /* none - or hidden */
     --sidebar-ring: 199 89% 48%;
   }
 }
@@ -64,11 +57,11 @@
   }
 
   h1 {
-    @apply text-[28px] font-bold text-[#0C1A2E] tracking-tight;
+    @apply text-[28px] font-bold text-[#0F172A] tracking-tight;
   }
 
   h2, h3 {
-    @apply text-[18px] font-semibold text-[#0C1A2E] tracking-tight;
+    @apply text-[18px] font-semibold text-[#1E293B] tracking-tight;
   }
 }
 
@@ -78,41 +71,56 @@
   }
 
   .text-caption {
-    @apply text-[12px] text-[#64748B];
+    @apply text-[12px] text-[#94A3B8];
   }
 
   .text-label {
-    @apply text-[11px] uppercase tracking-wider font-semibold text-[#0EA5E9];
+    @apply text-[11px] uppercase tracking-wider font-semibold text-[#64748B];
   }
 
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #E0F2FE;
+    background: #F8FAFC;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #7DD3FC;
-    border-radius: 5px;
+    background: #E2E8F0;
+    border-radius: 10px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #0EA5E9;
+    background: #CBD5E1;
   }
 
   .shimmer {
-    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+    position: relative;
+    overflow: hidden;
   }
 
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    animation: shimmer-effect 2.5s infinite;
+  }
+
+  @keyframes shimmer-effect {
+    0% { transform: translateX(-100%) skewX(-20deg); }
+    100% { transform: translateX(200%) skewX(-20deg); }
   }
 
   .stagger-fade-in > * {

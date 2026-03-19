@@ -17,25 +17,25 @@ export type TriggerEvent = {
 
 export function TriggerEventsTable({ events }: { events: TriggerEvent[] }) {
   return (
-    <Card className="border border-[#BAE6FD] shadow-lg shadow-[#0EA5E9]/5 overflow-hidden bg-white">
-      <div className="p-6 border-b border-[#BAE6FD] bg-[#F0F9FF]">
-        <h2 className="text-sm font-bold text-[#0C1A2E]">Verified Trigger Events</h2>
-        <p className="text-caption mt-0.5 text-[#64748B]">Parametric triggers satisfying policy conditions</p>
+    <Card className="border border-[#E2E8F0] shadow-sm overflow-hidden bg-white rounded-xl">
+      <div className="p-6 border-b border-[#E2E8F0] bg-white">
+        <h2 className="text-[14px] font-semibold text-[#0F172A]">Verified Trigger Events</h2>
+        <p className="text-[12px] mt-0.5 text-[#94A3B8]">Parametric triggers satisfying policy conditions</p>
       </div>
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent border-b border-[#BAE6FD] bg-[#F0F9FF]">
-            <TableHead className="text-label text-[#0EA5E9] py-4">Time</TableHead>
-            <TableHead className="text-label text-[#0EA5E9] py-4">City</TableHead>
-            <TableHead className="text-label text-[#0EA5E9] py-4">Conditions</TableHead>
-            <TableHead className="text-label text-[#0EA5E9] py-4">Payout</TableHead>
-            <TableHead className="text-label text-[#0EA5E9] py-4 text-right">Status</TableHead>
+          <TableRow className="hover:bg-transparent border-b border-[#E2E8F0] bg-[#F8FAFC]">
+            <TableHead className="py-4">Time</TableHead>
+            <TableHead className="py-4">City</TableHead>
+            <TableHead className="py-4">Conditions</TableHead>
+            <TableHead className="py-4">Payout</TableHead>
+            <TableHead className="py-4 text-right">Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {events.map((event) => (
-            <TableRow key={event.id} className="transition-all border-b border-[#F0F9FF] hover:bg-[#F0F9FF] group">
-              <TableCell className="text-[12px] text-[#64748B] whitespace-nowrap py-4">
+            <TableRow key={event.id} className="transition-all border-b border-[#E2E8F0] hover:bg-[#F8FAFC] group">
+              <TableCell className="text-[12px] text-[#94A3B8] whitespace-nowrap py-4">
                 {new Date(event.triggered_at).toLocaleString("en-IN", {
                   month: "short",
                   day: "numeric",
@@ -44,13 +44,13 @@ export function TriggerEventsTable({ events }: { events: TriggerEvent[] }) {
                   hour12: false
                 })}
               </TableCell>
-              <TableCell className="text-[14px] font-bold text-[#0C1A2E] group-hover:text-[#0EA5E9] transition-colors">{event.city}</TableCell>
+              <TableCell className="text-[14px] font-semibold text-[#0F172A] group-hover:text-[#0EA5E9] transition-colors">{event.city}</TableCell>
               <TableCell>
-                <div className="flex items-center gap-4 text-[13px] font-bold">
+                <div className="flex items-center gap-4 text-[13px] font-semibold">
                   <span className="flex items-center gap-1.5 text-[#0EA5E9]">
                     <CloudRain className="h-3.5 w-3.5" /> {event.rainfall_mm}mm
                   </span>
-                  <span className="flex items-center gap-1.5 text-amber-600">
+                  <span className="flex items-center gap-1.5 text-[#D97706]">
                     <Thermometer className="h-3.5 w-3.5" /> {event.temperature}°C
                   </span>
                 </div>

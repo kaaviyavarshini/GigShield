@@ -55,7 +55,7 @@ function WeatherContent({ city, data, isLoading, isError }: any) {
   const rainProgress = Math.min((data.rainfall / RAIN_THRESHOLD) * 100, 100);
 
   return (
-    <Card className={`relative overflow-hidden transition-all duration-500 bg-white border-[#BAE6FD] shadow-lg shadow-[#0EA5E9]/5 ${isRainTrigger ? "border-red-500/50 shadow-[0_0_30px_rgba(220,38,38,0.15)] bg-red-50/10" : "hover:shadow-[#0EA5E9]/10"}`}>
+    <Card className={`relative overflow-hidden transition-all duration-500 bg-white border-[#E2E8F0] shadow-sm ${isRainTrigger ? "border-[#DC2626] shadow-[0_0_24px_rgba(220,38,38,0.1)] bg-[#FFF5F5]" : "hover:border-[#0EA5E9]/30"}`}>
       {isRainTrigger && (
         <div className="absolute top-0 left-0 w-1.5 h-full bg-red-600 animate-pulse" />
       )}
@@ -63,14 +63,14 @@ function WeatherContent({ city, data, isLoading, isError }: any) {
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className={`p-2.5 rounded-xl ${isRainTrigger ? "bg-red-600 text-white shadow-lg shadow-red-600/20" : "bg-[#F0F9FF] text-[#0EA5E9] border border-[#BAE6FD]"}`}>
+            <div className={`p-2.5 rounded-xl ${isRainTrigger ? "bg-[#DC2626] text-white" : "bg-[#F0F9FF] text-[#0EA5E9]"}`}>
               <Cloud className="w-5 h-5" />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-bold text-[#0C1A2E]">Weather Conditions</span>
+              <span className="text-sm font-semibold text-[#0F172A]">Weather Conditions</span>
               <div className="flex items-center gap-2 mt-0.5">
-                <div className="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_4px_rgba(16,185,129,0.5)]" />
-                <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">{city} — LIVE</span>
+                <div className="h-1.5 w-1.5 bg-[#16A34A] rounded-full animate-pulse" />
+                <span className="text-[10px] font-medium text-[#94A3B8] uppercase tracking-widest">{city} — LIVE</span>
               </div>
             </div>
           </div>
@@ -85,33 +85,33 @@ function WeatherContent({ city, data, isLoading, isError }: any) {
 
       <CardContent className="grid grid-cols-2 gap-4 pb-6">
         {/* Temperature Pill */}
-        <div className="bg-[#F0F9FF] p-4 rounded-2xl border border-[#BAE6FD] group hover:border-[#0EA5E9]/30 transition-all shadow-sm">
+        <div className="bg-[#F0F9FF] p-4 rounded-xl border border-[#E2E8F0] group transition-all">
           <div className="flex items-center gap-2 mb-2">
             <Thermometer className="w-3.5 h-3.5 text-[#64748B]" />
-            <span className="text-label text-[#0EA5E9]">Temp</span>
+            <span className="text-[12px] font-semibold text-[#0EA5E9]">Temp</span>
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-[28px] font-extrabold text-[#0C1A2E]">{data.temperature}</span>
-            <span className="text-caption font-bold text-[#64748B]">°C</span>
+            <span className="text-[32px] font-bold text-[#0EA5E9]">{data.temperature}</span>
+            <span className="text-[12px] font-medium text-[#94A3B8]">°C</span>
           </div>
-          <div className="w-full h-1 bg-[#E0F2FE] rounded-full mt-3 overflow-hidden">
+          <div className="w-full h-1 bg-[#E2E8F0] rounded-full mt-3 overflow-hidden">
             <div className="h-full bg-[#0EA5E9] rounded-full" style={{ width: '40%' }} />
           </div>
         </div>
 
         {/* Rainfall Pill */}
-        <div className={`p-4 rounded-2xl border transition-all duration-300 shadow-sm ${isRainTrigger ? "bg-red-50 border-red-200" : "bg-[#F0F9FF] border-[#BAE6FD] hover:border-[#0EA5E9]/30"}`}>
+        <div className={`p-4 rounded-xl border transition-all duration-300 ${isRainTrigger ? "bg-[#FFF5F5] border-[#DC2626]" : "bg-[#F0F9FF] border-[#E2E8F0]"}`}>
           <div className="flex items-center gap-2 mb-2">
-            <Droplets className={`w-3.5 h-3.5 ${isRainTrigger ? "text-red-600" : "text-[#64748B]"}`} />
-            <span className="text-label text-[#0EA5E9]">Rainfall</span>
+            <Droplets className={`w-3.5 h-3.5 ${isRainTrigger ? "text-[#DC2626]" : "text-[#64748B]"}`} />
+            <span className="text-[12px] font-semibold text-[#0EA5E9]">Rainfall</span>
           </div>
           <div className="flex items-baseline gap-1">
-            <span className={`text-[28px] font-extrabold ${isRainTrigger ? "text-red-600" : "text-[#0C1A2E]"}`}>{data.rainfall}</span>
-            <span className="text-caption font-bold uppercase text-[#64748B]">mm</span>
+            <span className={`text-[32px] font-bold ${isRainTrigger ? "text-[#DC2626]" : "text-[#0EA5E9]"}`}>{data.rainfall}</span>
+            <span className="text-[12px] font-medium text-[#94A3B8]">mm</span>
           </div>
-          <div className="w-full h-1 bg-[#E0F2FE] rounded-full mt-3 overflow-hidden">
+          <div className="w-full h-1 bg-[#E2E8F0] rounded-full mt-3 overflow-hidden">
             <div 
-              className={`h-full transition-all duration-1000 ${isRainTrigger ? "bg-red-600 animate-pulse" : "bg-[#0EA5E9]"}`} 
+              className={`h-full transition-all duration-1000 ${isRainTrigger ? "bg-[#DC2626]" : "bg-[#0EA5E9]"}`} 
               style={{ width: `${rainProgress}%` }} 
             />
           </div>

@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlertCircle, Clock, CheckCircle2, Banknote, XCircle } from "lucide-react";
+import { AlertCircle, Clock, CheckCircle2, Banknote, XCircle, AlertTriangle } from "lucide-react";
 
 export type AdminClaim = {
   id: string;
@@ -33,23 +33,23 @@ export function ClaimsTable({
   onSelectCity?: (city: string, policyId: string) => void 
 }) {
   return (
-    <Card className="border border-[#BAE6FD] shadow-lg shadow-[#0EA5E9]/5 overflow-hidden bg-white">
-      <div className="p-6 border-b border-[#BAE6FD] flex items-center justify-between">
+    <Card className="border border-[#E2E8F0] shadow-sm overflow-hidden bg-white rounded-xl">
+      <div className="p-6 border-b border-[#E2E8F0] flex items-center justify-between bg-white">
         <div>
-          <h2 className="text-sm font-bold text-[#0C1A2E]">Recent Claims</h2>
-          <p className="text-caption mt-0.5 text-[#64748B]">Live parametric claim adjustments and fraud monitoring</p>
+          <h2 className="text-[14px] font-semibold text-[#0F172A]">Recent Claims</h2>
+          <p className="text-[12px] mt-0.5 text-[#94A3B8]">Live parametric claim adjustments and fraud monitoring</p>
         </div>
-        <Badge variant="outline" className="font-bold border-[#0EA5E9] text-[#0EA5E9]">LIVE FEED</Badge>
+        <Badge variant="outline" className="font-semibold border-[#0EA5E9] text-[#0EA5E9] rounded-full px-3 py-1">LIVE FEED</Badge>
       </div>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow className="hover:bg-transparent border-b border-[#BAE6FD] bg-[#F0F9FF]">
-              <TableHead className="text-label text-[#0EA5E9] py-4">Worker / Zone</TableHead>
-              <TableHead className="text-label text-[#0EA5E9] py-4">Trigger</TableHead>
-              <TableHead className="text-label text-[#0EA5E9] py-4">Payout</TableHead>
-              <TableHead className="text-label text-[#0EA5E9] py-4">Fraud Score</TableHead>
-              <TableHead className="text-label text-[#0EA5E9] py-4 text-right">Status</TableHead>
+            <TableRow className="hover:bg-transparent border-b border-[#E2E8F0] bg-[#F8FAFC]">
+              <TableHead className="py-4">Worker / Zone</TableHead>
+              <TableHead className="py-4">Trigger</TableHead>
+              <TableHead className="py-4">Payout</TableHead>
+              <TableHead className="py-4">Fraud Score</TableHead>
+              <TableHead className="py-4 text-right">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -63,31 +63,55 @@ export function ClaimsTable({
                 <TableRow 
                   key={claim.id} 
                   className={`
-                    cursor-pointer transition-all border-l-4 group border-b border-[#F0F9FF]
-                    ${isHighFraud ? "bg-red-50" : ""} 
-                    ${isSelected ? "bg-[#E0F2FE] border-l-[#0EA5E9]" : "border-l-transparent hover:bg-[#F0F9FF]"}
+                    cursor-pointer transition-all group border-b border-[#E2E8F0]
+                    ${isHighFraud ? "bg-[#FFF5F5]" : "bg-white"} 
+                    ${isSelected ? "bg-[#F0F9FF] border-l-[3px] border-l-[#0EA5E9]" : "hover:bg-[#F8FAFC]"}
                   `}
+                  data-state={isSelected ? "selected" : undefined}
                   onClick={() => onSelectCity?.(claim.zone, claim.policy_id)}
                 >
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#0C1A2E] group-hover:text-[#0EA5E9] transition-colors">{claim.worker_name}</span>
-                      <span className="text-[12px] text-[#64748B]">{claim.zone}</span>
+                      <span className="text-[14px] font-semibold text-[#0F172A] group-hover:text-[#0EA5E9] transition-colors">{claim.worker_name}</span>
+                      <span className="text-[12px] text-[#94A3B8]">{claim.zone}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-[13px] font-medium capitalize text-[#0C1A2E]">
+                  <TableCell className="text-[13px] font-medium capitalize text-[#334155]">
                     {claim.trigger_type.replace("_", " ")}
                   </TableCell>
                   <TableCell className="font-mono-data text-[14px] font-bold text-[#0EA5E9]">
                     ₹{claim.payout_amount.toLocaleString()}
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-1.5">
-                      <span className={`text-[14px] font-mono-data font-bold ${isHighFraud ? "text-red-600" : "text-[#64748B]"}`}>
-                        {claim.fraud_score.toFixed(2)}
-                      </span>
-                      {isHighFraud && <AlertCircle className="h-4 w-4 text-red-600 animate-pulse" />}
-                    </div>
+                    {(() => {
+                      const score = claim.fraud_score;
+                      let badgeColor = "";
+                      let textColor = "";
+                      let label = "";
+                      
+                      if (score <= 0.29) {
+                        badgeColor = "bg-[#DCFCE7]";
+                        textColor = "text-[#16A34A]";
+                        label = "Low Risk";
+                      } else if (score <= 0.59) {
+                        badgeColor = "bg-[#FEF3C7]";
+                        textColor = "text-[#D97706]";
+                        label = "Medium Risk";
+                      } else {
+                        badgeColor = "bg-[#FEE2E2]";
+                        textColor = "text-[#DC2626]";
+                        label = "High Risk";
+                      }
+
+                      const showWarning = claim.status === "rejected" && score === 0.91;
+
+                      return (
+                        <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-mono-data text-[12px] font-bold ${badgeColor} ${textColor}`}>
+                          {showWarning && <AlertTriangle size={12} className="shrink-0" />}
+                          <span>{score.toFixed(2)} · {label}</span>
+                        </div>
+                      );
+                    })()}
                   </TableCell>
                   <TableCell className="text-right">
                     <Badge variant={config.variant} className="px-3">
@@ -98,15 +122,15 @@ export function ClaimsTable({
               );
             })}
             {claims.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center py-24">
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={5} className="text-center py-24 bg-[#F8FAFC]">
                   <div className="flex flex-col items-center justify-center gap-4">
-                    <div className="h-16 w-16 bg-[#F0F9FF] border border-[#BAE6FD] rounded-full flex items-center justify-center text-[#BAE6FD]">
-                      <AlertCircle className="h-8 w-8 opacity-40" />
+                    <div className="h-16 w-16 bg-white border border-[#E2E8F0] rounded-full flex items-center justify-center text-[#E2E8F0]">
+                      <AlertCircle className="h-8 w-8" />
                     </div>
                     <div className="flex flex-col items-center max-w-[280px]">
-                      <p className="text-[14px] font-bold text-[#0C1A2E]">No trigger events yet</p>
-                      <p className="text-caption text-center text-[#64748B]">Run a simulation or wait for weather updates to see live parametric claims.</p>
+                      <p className="text-[14px] font-semibold text-[#0F172A]">No trigger events yet</p>
+                      <p className="text-[12px] text-center text-[#94A3B8]">Run a simulation or wait for weather updates to see live parametric claims.</p>
                     </div>
                   </div>
                 </TableCell>

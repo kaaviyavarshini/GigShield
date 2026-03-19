@@ -13,6 +13,9 @@ import { useWeather } from "@/hooks/useWeather";
 import { AQIWidget } from "@/components/AQIWidget";
 import { ForecastWidget } from "@/components/ForecastWidget";
 import { WeatherWidget } from "@/components/WeatherWidget";
+import { DisruptionMap } from "@/components/DisruptionMap";
+import { PayoutExplainer } from "@/components/PayoutExplainer";
+import { LivePayoutCounter } from "@/components/LivePayoutCounter";
 
 const AdminDashboard = () => {
   const [metrics, setMetrics] = useState<AdminMetrics>({
@@ -156,12 +159,14 @@ const AdminDashboard = () => {
       subtitle="Real-time parametric monitoring" 
       lastUpdated={lastUpdated}
     >
+      <LivePayoutCounter />
       <MetricCards metrics={metrics} />
       
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 stagger-fade-in">
         <div className="space-y-8">
+          <DisruptionMap />
           <div className="space-y-4">
-            <h2 className="text-label">Live Claims Stream</h2>
+            <h2 className="text-[16px] font-semibold text-[#1E293B]">Live Claims Stream</h2>
             <ClaimsTable 
               claims={claims} 
               selectedCity={selectedCity}
@@ -173,32 +178,33 @@ const AdminDashboard = () => {
           </div>
 
           <TriggerSimulation />
+          <PayoutExplainer />
           
           <div className="space-y-4 pt-4">
-            <h2 className="text-label">System Audit Log</h2>
+            <h2 className="text-[16px] font-semibold text-[#1E293B]">System Audit Log</h2>
             <TriggerEventsTable events={triggerEvents} />
           </div>
         </div>
 
         <div className="space-y-8">
           <div className="space-y-4">
-            <h2 className="text-label">Real-time Risk Map</h2>
+            <h2 className="text-[16px] font-semibold text-[#1E293B]">Real-time Risk Map</h2>
             <DisruptionTable events={disruptions} />
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
-               <h2 className="text-label">Current Weather</h2>
+               <h2 className="text-[14px] font-semibold text-[#1E293B]">Current Weather</h2>
                <WeatherWidget city={selectedCity} />
             </div>
             <div className="space-y-4">
-               <h2 className="text-label">24h Forecast</h2>
+               <h2 className="text-[14px] font-semibold text-[#1E293B]">24h Forecast</h2>
                <ForecastWidget city={selectedCity} />
             </div>
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-label">Air Quality Monitor</h2>
+            <h2 className="text-[16px] font-semibold text-[#1E293B]">Air Quality Monitor</h2>
             <AQIWidget city={selectedCity} policyId={selectedPolicyId} />
           </div>
         </div>

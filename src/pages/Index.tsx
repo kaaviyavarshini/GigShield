@@ -6,7 +6,7 @@ const Index = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#F0F9FF] flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center relative overflow-hidden">
       {/* Decorative Blur Elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#0EA5E9]/5 rounded-full blur-[100px] -mr-48 -mt-48" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#0EA5E9]/10 rounded-full blur-[100px] -ml-48 -mb-48" />
