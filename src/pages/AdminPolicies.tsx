@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 type Policy = {
   id: string;
   worker_id: string;
-  workers: { name: string };
+  workers: { name: string, plan_type: string };
   week_start: string;
   week_end: string;
   weekly_premium: number;
@@ -24,7 +24,7 @@ export default function AdminPolicies() {
     async function fetchPolicies() {
       const { data, error } = await supabase
         .from("policies")
-        .select("*, workers(name)")
+        .select("*, workers(name, plan_type)")
         .order("created_at", { ascending: false });
       
       if (!error && data) {
@@ -49,6 +49,7 @@ export default function AdminPolicies() {
           <TableHeader className="bg-[#F0F9FF] border-b border-[#BAE6FD]">
             <TableRow className="hover:bg-transparent">
               <TableHead className="text-label text-[#0EA5E9] py-4">Worker</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Plan</TableHead>
               <TableHead className="text-label text-[#0EA5E9] py-4">Period</TableHead>
               <TableHead className="text-label text-[#0EA5E9] py-4">Premium</TableHead>
               <TableHead className="text-label text-[#0EA5E9] py-4">Coverage</TableHead>
@@ -59,6 +60,11 @@ export default function AdminPolicies() {
             {policies.map((p) => (
               <TableRow key={p.id} className="hover:bg-[#F0F9FF] transition-colors border-b border-[#F0F9FF]">
                 <TableCell className="font-bold text-[#0C1A2E]">{p.workers?.name}</TableCell>
+                <TableCell>
+                  <Badge className={`${p.workers?.plan_type === 'Gold' ? 'bg-amber-500 hover:bg-amber-600' : p.workers?.plan_type === 'Silver' ? 'bg-slate-500 hover:bg-slate-600' : 'bg-gray-400 hover:bg-gray-500'} text-white border-none font-bold uppercase text-[10px]`}>
+                    {p.workers?.plan_type || 'None'}
+                  </Badge>
+                </TableCell>
                 <TableCell className="text-[12px] text-[#64748B] font-medium">
                   {p.week_start} to {p.week_end}
                 </TableCell>

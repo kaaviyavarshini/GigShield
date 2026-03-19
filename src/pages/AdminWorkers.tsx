@@ -12,6 +12,9 @@ type Worker = {
   zone: string;
   avg_weekly_earnings: number;
   experience_weeks: number;
+  work_type: string;
+  id_card_url: string;
+  plan_type: string;
   created_at: string;
 };
 
@@ -49,8 +52,11 @@ export default function AdminWorkers() {
           <TableHeader className="bg-[#F0F9FF] border-b border-[#BAE6FD]">
             <TableRow className="hover:bg-transparent">
               <TableHead className="text-label text-[#0EA5E9] py-4">Name</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Work Type</TableHead>
               <TableHead className="text-label text-[#0EA5E9] py-4">Platform</TableHead>
               <TableHead className="text-label text-[#0EA5E9] py-4">Zone</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Verification</TableHead>
+              <TableHead className="text-label text-[#0EA5E9] py-4">Plan</TableHead>
               <TableHead className="text-label text-[#0EA5E9] py-4">Weekly Earnings</TableHead>
               <TableHead className="text-label text-[#0EA5E9] py-4">Exp (Weeks)</TableHead>
             </TableRow>
@@ -60,11 +66,32 @@ export default function AdminWorkers() {
               <TableRow key={worker.id} className="hover:bg-[#F0F9FF] transition-colors border-b border-[#F0F9FF]">
                 <TableCell className="font-bold text-[#0C1A2E]">{worker.name}</TableCell>
                 <TableCell>
-                  <Badge variant="outline" className={`font-bold ${worker.platform === 'Zomato' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-orange-50 text-orange-600 border-orange-100'}`}>
+                  <Badge variant="outline" className="bg-sky-50 text-sky-600 border-sky-100 font-bold">
+                    {worker.work_type || 'Delivery'}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline" className={`font-bold ${worker.platform === 'Zomato' ? 'bg-red-50 text-red-600 border-red-100' : worker.platform === 'Amazon' ? 'bg-yellow-50 text-yellow-700 border-yellow-100' : 'bg-orange-50 text-orange-600 border-orange-100'}`}>
                     {worker.platform}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-[#64748B] font-medium">{worker.zone}</TableCell>
+                <TableCell>
+                  {worker.id_card_url ? (
+                    <Badge className="bg-emerald-500 text-white border-none cursor-pointer hover:bg-emerald-600 font-bold">
+                      Verified Id
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-[#64748B] border-[#E2E8F0] font-bold">
+                      Pending
+                    </Badge>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <Badge className={`${worker.plan_type === 'Gold' ? 'bg-amber-500 hover:bg-amber-600' : worker.plan_type === 'Silver' ? 'bg-slate-500 hover:bg-slate-600' : 'bg-gray-400 hover:bg-gray-500'} text-white border-none font-bold uppercase text-[10px]`}>
+                    {worker.plan_type || 'None'}
+                  </Badge>
+                </TableCell>
                 <TableCell className="font-mono-data font-bold text-[#0EA5E9]">₹{worker.avg_weekly_earnings.toLocaleString()}</TableCell>
                 <TableCell className="text-[#64748B] font-medium">{worker.experience_weeks}</TableCell>
               </TableRow>

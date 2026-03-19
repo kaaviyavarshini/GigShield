@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, User as UserIcon, Bot } from "lucide-react";
+import { Send, Bot } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 type Message = {
@@ -12,17 +12,20 @@ type Message = {
   text: string;
 };
 
-type FormStep = "name" | "platform" | "zone" | "earnings" | "done";
+type FormStep = "intro" | "name" | "work_type" | "platform" | "id_upload" | "zone" | "earnings" | "login" | "done";
 
 export default function Onboarding() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [step, setStep] = useState<FormStep>("name");
+  const [step, setStep] = useState<FormStep>("intro");
   const [formData, setFormData] = useState({
     name: "",
+    work_type: "",
     platform: "",
+    id_card_url: "",
     zone: "",
     earnings: "",
+    plan_type: "None",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -30,7 +33,7 @@ export default function Onboarding() {
   const { toast } = useToast();
 
   useEffect(() => {
-    addBotMessage("Hi! I'm GigShield's AI assistant. Let's get you protected. What is your full name?");
+    addBotMessage("Hi! I'm GigShield's AI assistant. Let's get you protected. Would you like to create a new profile or access an existing one? (Type 'New' or 'Login')");
   }, []);
 
   useEffect(() => {
@@ -55,10 +58,43 @@ export default function Onboarding() {
     addUserMessage(currentInput);
     setInputValue("");
 
-    if (step === "name") {
+    if (step === "intro") {
+      if (currentInput.toLowerCase().includes("login")) {
+        setStep("login");
+        setTimeout(() => addBotMessage("Please enter your unique GigShield ID:"), 500);
+      } else {
+        setStep("name");
+        setTimeout(() => addBotMessage("Great! Let's start. What is your full name?"), 500);
+      }
+    } else if (step === "login") {
+      setIsSubmitting(true);
+      try {
+        const { data, error } = await supabase
+          .from("workers")
+          .select("id")
+          .eq("id", currentInput)
+          .single();
+        
+        if (error || !data) {
+          addBotMessage("Sorry, I couldn't find that ID. Please check and try again, or type 'New' to start over.");
+        } else {
+          localStorage.setItem("gigshield_worker_id", data.id);
+          addBotMessage("Found you! Redirecting to your dashboard...");
+          setTimeout(() => navigate("/worker"), 1500);
+        }
+      } catch (err) {
+        addBotMessage("There was an error accessing your profile. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else if (step === "name") {
       setFormData((prev) => ({ ...prev, name: currentInput }));
+      setStep("work_type");
+      setTimeout(() => addBotMessage(`Nice to meet you, ${currentInput}. What type of work do you do? (e.g., Food Delivery, Q-Commerce, Logistics)`), 500);
+    } else if (step === "work_type") {
+      setFormData((prev) => ({ ...prev, work_type: currentInput }));
       setStep("platform");
-      setTimeout(() => addBotMessage(`Nice to meet you, ${currentInput}. Which platform do you work for? (E.g., Zomato, Swiggy, or Both)`), 500);
+      setTimeout(() => addBotMessage("Got it. Which platform do you work for? (e.g., Zomato, Swiggy, Amazon, Zepto)"), 500);
     } else if (step === "platform") {
       setFormData((prev) => ({ ...prev, platform: currentInput }));
       setStep("zone");
@@ -66,20 +102,22 @@ export default function Onboarding() {
     } else if (step === "zone") {
       setFormData((prev) => ({ ...prev, zone: currentInput }));
       setStep("earnings");
-      setTimeout(() => addBotMessage("Almost done! What are your average weekly earnings in ₹? (E.g., 5000)"), 500);
+      setTimeout(() => addBotMessage("Almost done! Please enter your earnings for the last 4 weeks, separated by commas (e.g., 5000, 4800, 5200, 5100)."), 500);
     } else if (step === "earnings") {
-      const earningsValue = parseInt(currentInput.replace(/[^0-9]/g, ""), 10);
-      if (isNaN(earningsValue)) {
-        setTimeout(() => addBotMessage("Please enter a valid number for your weekly earnings."), 500);
+      const earningsArray = currentInput.split(',').map(v => parseInt(v.trim().replace(/[^0-9]/g, ""), 10));
+      if (earningsArray.length < 4 || earningsArray.some(isNaN)) {
+        setTimeout(() => addBotMessage("Please enter 4 weekly earning values separated by commas (e.g., 5000, 4800, 5200, 5100)."), 500);
         return;
       }
-      setFormData((prev) => ({ ...prev, earnings: earningsValue.toString() }));
+      const avgEarnings = Math.round(earningsArray.reduce((a, b) => a + b, 0) / 4);
+      setFormData((prev) => ({ ...prev, earnings: avgEarnings.toString() }));
       setStep("done");
-      setTimeout(() => addBotMessage("Perfect! I'm setting up your GigShield parametric policy now..."), 500);
+      
+      setTimeout(() => addBotMessage(`Excellent! I'm creating your GigShield profile now...`), 500);
       
       await submitData({
         ...formData,
-        earnings: earningsValue.toString(),
+        earnings: avgEarnings.toString(),
       });
     }
   };
@@ -91,45 +129,27 @@ export default function Onboarding() {
         .from("workers")
         .insert({
           name: data.name,
+          work_type: data.work_type,
           platform: data.platform,
+          id_card_url: data.id_card_url,
           zone: data.zone,
           avg_weekly_earnings: parseInt(data.earnings, 10),
-          experience_weeks: 1, // Defaulting experience
+          plan_type: 'None',
+          experience_weeks: 1,
         })
         .select()
         .single();
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
-      // Automatically create an active policy for the user for the current week
-      const today = new Date();
-      const nextWeek = new Date(today);
-      nextWeek.setDate(today.getDate() + 7);
-
-      const { error: policyError } = await supabase.from("policies").insert({
-        worker_id: newWorker.id,
-        week_start: today.toISOString().split('T')[0],
-        week_end: nextWeek.toISOString().split('T')[0],
-        weekly_premium: (parseInt(data.earnings, 10) * 0.02).toFixed(2), // 2% premium
-        coverage_amount: (parseInt(data.earnings, 10) * 0.5).toFixed(2), // 50% coverage
-        status: "active"
-      });
-
-      if (policyError) {
-        throw policyError;
-      }
-
-      toast({
-        title: "Registration successful!",
-        description: "Redirecting you to your dashboard...",
-      });
-      
-      // Store worker ID to mimic session
       localStorage.setItem("gigshield_worker_id", newWorker.id);
       
-      setTimeout(() => navigate("/worker"), 1500);
+      toast({
+        title: "Profile Created!",
+        description: `Your unique ID is ${newWorker.id.slice(0, 8)}. Redirecting to dashboard...`,
+      });
+      
+      setTimeout(() => navigate("/worker"), 2000);
     } catch (error) {
       console.error("Error creating worker:", error);
       toast({
@@ -137,7 +157,7 @@ export default function Onboarding() {
         description: "Could not set up your account. Please try again.",
         variant: "destructive",
       });
-      addBotMessage("Sorry, there was an error saving your details. Let's try again. What is your full name?");
+      addBotMessage("Sorry, there was an error saving your details. Let's try again.");
       setStep("name");
     } finally {
       setIsSubmitting(false);
@@ -146,7 +166,6 @@ export default function Onboarding() {
 
   return (
     <div className="flex flex-col h-screen bg-[#F8FBFF] md:max-w-md md:mx-auto md:border-x border-[#BAE6FD] shadow-2xl relative overflow-hidden">
-      {/* Premium Header */}
       <div className="bg-[#0EA5E9] text-white p-6 shadow-lg flex items-center gap-4 relative z-10 rounded-b-3xl">
         <div className="bg-white/20 p-2.5 rounded-2xl backdrop-blur-md border border-white/20">
           <Bot size={28} className="animate-bounce" />
@@ -160,7 +179,6 @@ export default function Onboarding() {
         </div>
       </div>
 
-      {/* Chat Area */}
       <div 
         ref={scrollRef}
         className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#F8FBFF]"
@@ -193,7 +211,6 @@ export default function Onboarding() {
         )}
       </div>
 
-      {/* Input Area */}
       <div className="bg-white p-4 border-t border-[#BAE6FD] relative z-10 w-full rounded-t-3xl shadow-[0_-10px_20px_rgba(14,165,233,0.05)]">
         <form onSubmit={handleSend} className="flex gap-3 items-center">
           <Input
@@ -202,9 +219,10 @@ export default function Onboarding() {
             disabled={step === "done" || isSubmitting}
             placeholder={
               step === "name" ? "Type your name..." :
-              step === "platform" ? "Zomato, Swiggy..." :
+              step === "work_type" ? "e.g. Food Delivery" :
+              step === "platform" ? "Zomato, Swiggy, Amazon..." :
               step === "zone" ? "Type your zone..." :
-              step === "earnings" ? "e.g. 5000" :
+              step === "earnings" ? "e.g. 5000, 4800, 5200, 5100" :
               "Processing..."
             }
             className="rounded-[20px] bg-[#F8FBFF] border-[#BAE6FD] h-14 px-6 shadow-inner focus-visible:ring-[#0EA5E9] text-[#0C1A2E] font-bold"

@@ -24,9 +24,12 @@ from pydantic import BaseModel
 
 class WorkerProfile(BaseModel):
     name: str
+    work_type: Optional[str] = None
     platform: str
+    id_card_url: Optional[str] = None
     zone: str
     weekly_earnings: float
+    plan_type: Optional[str] = "None"
 
 class PolicyCreate(BaseModel):
     worker_id: str

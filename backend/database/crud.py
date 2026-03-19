@@ -1,13 +1,16 @@
-from database.client import supabase
+from .client import supabase
 from datetime import date, timedelta
 
 # INSERT a new worker
 def save_worker(profile: dict):
     result = supabase.table("workers").insert({
         "name":                profile["name"],
+        "work_type":           profile.get("work_type"),
         "platform":            profile["platform"],
+        "id_card_url":         profile.get("id_card_url"),
         "zone":                profile["zone"],
-        "avg_weekly_earnings": profile["weekly_earnings"]
+        "avg_weekly_earnings": profile["weekly_earnings"],
+        "plan_type":           profile.get("plan_type", "None")
     }).execute()
     return result.data[0]  # returns the new row with its UUID
 
