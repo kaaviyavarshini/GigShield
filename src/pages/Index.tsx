@@ -14,7 +14,7 @@ const Index = () => {
       <div className="max-w-xl mx-auto px-6 text-center relative z-10">
         <div className="inline-flex items-center gap-2 bg-[#E0F2FE] text-[#0EA5E9] border border-[#BAE6FD] px-4 py-2 rounded-full text-sm font-black uppercase tracking-widest mb-8 shadow-sm">
           <Shield className="h-4 w-4" />
-          GigShield
+          EarnSafe
         </div>
         <h1 className="text-4xl sm:text-5xl font-black text-[#0C1A2E] mb-6 tracking-tight leading-tight">
           Parametric Insurance <br />

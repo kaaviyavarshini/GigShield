@@ -33,7 +33,7 @@ export default function Onboarding() {
   const { toast } = useToast();
 
   useEffect(() => {
-    addBotMessage("Hi! I'm GigShield's AI assistant. Let's get you protected. Would you like to create a new profile or access an existing one? (Type 'New' or 'Login')");
+    addBotMessage("Hi! I'm EarnSafe's AI assistant. Let's get you protected. Would you like to create a new profile or access an existing one? (Type 'New' or 'Login')");
   }, []);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function Onboarding() {
     if (step === "intro") {
       if (currentInput.toLowerCase().includes("login")) {
         setStep("login");
-        setTimeout(() => addBotMessage("Please enter your unique GigShield ID:"), 500);
+        setTimeout(() => addBotMessage("Please enter your unique EarnSafe ID:"), 500);
       } else {
         setStep("name");
         setTimeout(() => addBotMessage("Great! Let's start. What is your full name?"), 500);
@@ -78,7 +78,7 @@ export default function Onboarding() {
         if (error || !data) {
           addBotMessage("Sorry, I couldn't find that ID. Please check and try again, or type 'New' to start over.");
         } else {
-          localStorage.setItem("gigshield_worker_id", data.id);
+          localStorage.setItem("earnsafe_worker_id", data.id);
           addBotMessage("Found you! Redirecting to your dashboard...");
           setTimeout(() => navigate("/worker"), 1500);
         }
@@ -113,7 +113,7 @@ export default function Onboarding() {
       setFormData((prev) => ({ ...prev, earnings: avgEarnings.toString() }));
       setStep("done");
       
-      setTimeout(() => addBotMessage(`Excellent! I'm creating your GigShield profile now...`), 500);
+      setTimeout(() => addBotMessage(`Excellent! I'm creating your EarnSafe profile now...`), 500);
       
       await submitData({
         ...formData,
@@ -142,7 +142,7 @@ export default function Onboarding() {
 
       if (error) throw error;
 
-      localStorage.setItem("gigshield_worker_id", newWorker.id);
+      localStorage.setItem("earnsafe_worker_id", newWorker.id);
       
       toast({
         title: "Profile Created!",
@@ -171,7 +171,7 @@ export default function Onboarding() {
           <Bot size={28} className="animate-bounce" />
         </div>
         <div>
-          <h1 className="font-black text-[18px] tracking-tight leading-tight">GigShield Assistant</h1>
+          <h1 className="font-black text-[18px] tracking-tight leading-tight">EarnSafe Assistant</h1>
           <div className="flex items-center gap-1.5 mt-0.5">
             <div className="h-1.5 w-1.5 bg-emerald-400 rounded-full animate-pulse" />
             <p className="text-[10px] uppercase font-bold tracking-widest text-white/80">AI Guide Online</p>

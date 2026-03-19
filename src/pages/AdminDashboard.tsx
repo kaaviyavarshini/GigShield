@@ -152,7 +152,7 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout 
-      title="GigShield Insurer Ops" 
+      title="EarnSafe Insurer Ops" 
       subtitle="Real-time parametric monitoring" 
       lastUpdated={lastUpdated}
     >

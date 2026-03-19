@@ -88,7 +88,7 @@ export default function WorkerView() {
   };
 
   useEffect(() => {
-    const workerId = localStorage.getItem("gigshield_worker_id");
+    const workerId = localStorage.getItem("earnsafe_worker_id");
     if (!workerId) {
       navigate("/onboard");
       return;
@@ -230,7 +230,7 @@ export default function WorkerView() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2 opacity-90">
               <Shield className="h-6 w-6" />
-              <span className="text-lg font-black tracking-tight uppercase">GigShield</span>
+              <span className="text-lg font-black tracking-tight uppercase">EarnSafe</span>
             </div>
             <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-md border border-white/20">
               <span className="text-[10px] font-black uppercase tracking-wider">ID: {worker.id.slice(0, 8)}</span>
