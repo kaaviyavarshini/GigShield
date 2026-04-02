@@ -13,6 +13,8 @@ import AdminPayouts from "./pages/AdminPayouts.tsx";
 import AdminAnalytics from "./pages/AdminAnalytics.tsx";
 import AdminChatbot from "./pages/AdminChatbot.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
+import Register from "./pages/Register.tsx";
+import PremiumCalculator from "./pages/PremiumCalculator.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/onboard" element={<Onboarding />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/calculator" element={<PremiumCalculator />} />
           <Route path="/worker" element={<WorkerView />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/workers" element={<AdminWorkers />} />

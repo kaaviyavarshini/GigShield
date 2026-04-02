@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const AQI_TRIGGER_THRESHOLD = 200; // Trigger threshold for hazardous conditions
 
 interface Props {
-  city:      string;
+  city: string;
   policyId?: string;
 }
 
@@ -102,7 +102,7 @@ function AQIContent({ city, data, isLoading, isError, error, policyId }: any) {
               </span>
             </div>
           </div>
-          
+
           <div className="bg-[#F0F9FF] p-4 rounded-3xl border border-[#E2E8F0]">
             <Wind className={`h-12 w-12 ${isTriggered ? "text-[#DC2626]" : "text-[#0EA5E9]/20"}`} />
           </div>
@@ -115,12 +115,12 @@ function AQIContent({ city, data, isLoading, isError, error, policyId }: any) {
             <div className="h-full bg-orange-500/80 border-r border-[#E2E8F0]" style={{ width: '10%' }} />
             <div className="h-full bg-rose-500/80 border-r border-[#E2E8F0]" style={{ width: '10%' }} />
             <div className="h-full bg-purple-700/80" style={{ width: '60%' }} />
-            
-            <motion.div 
-               className="absolute top-0 bottom-0 w-1.5 bg-white border-x border-[#0EA5E9] shadow-xl z-20"
-               initial={{ left: 0 }}
-               animate={{ left: `${Math.min((data.aqi / 500) * 100, 100)}%` }}
-               transition={{ type: "spring", stiffness: 60, damping: 15 }}
+
+            <motion.div
+              className="absolute top-0 bottom-0 w-1.5 bg-white border-x border-[#0EA5E9] shadow-xl z-20"
+              initial={{ left: 0 }}
+              animate={{ left: `${Math.min((data.aqi / 500) * 100, 100)}%` }}
+              transition={{ type: "spring", stiffness: 60, damping: 15 }}
             />
           </div>
           <div className="flex justify-between text-[10px] font-medium text-[#94A3B8] px-1 uppercase tracking-widest">

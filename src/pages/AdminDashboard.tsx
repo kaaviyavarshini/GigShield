@@ -155,7 +155,7 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout 
-      title="EarnSafe Insurer Ops" 
+      title="EarnSure Insurer Ops" 
       subtitle="Real-time parametric monitoring" 
       lastUpdated={lastUpdated}
     >

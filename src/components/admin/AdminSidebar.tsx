@@ -40,7 +40,7 @@ export function AdminSidebar() {
             <ShieldCheck className="text-[#0F172A] w-6 h-6" />
           </div>
           <div className="flex flex-col">
-            <span className="font-black text-[22px] tracking-tight text-white leading-none">EarnSafe</span>
+            <span className="font-black text-[22px] tracking-tight text-white leading-none">EarnSure</span>
             <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#38BDF8] mt-1">Insurer Portal</span>
           </div>
         </div>

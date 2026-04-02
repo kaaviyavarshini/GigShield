@@ -80,8 +80,23 @@ export default function WorkerView() {
       if (claimsData) {
         setClaims(claimsData);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to load dashboard data", error);
+      if (error.message?.includes("fetch")) {
+        // Create a basic mock worker for demo if real fetch fails
+        setWorker({
+          id: workerId,
+          name: "EarnSure Partner",
+          platform: "Delivery Partner",
+          zone: "Select Zone",
+          avg_weekly_earnings: 5000,
+          plan_type: "Gold",
+        });
+        toast({
+          title: "Offline Mode",
+          description: "Using simulated data for preview.",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -230,7 +245,7 @@ export default function WorkerView() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2 opacity-90">
               <Shield className="h-6 w-6" />
-              <span className="text-lg font-black tracking-tight uppercase">EarnSafe</span>
+              <span className="text-lg font-black tracking-tight uppercase">EarnSure</span>
             </div>
             <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full backdrop-blur-md border border-white/20">
               <span className="text-[10px] font-black uppercase tracking-wider">ID: {worker.id.slice(0, 8)}</span>

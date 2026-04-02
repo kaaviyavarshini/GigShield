@@ -14,7 +14,7 @@ const Index = () => {
       <div className="max-w-xl mx-auto px-6 text-center relative z-10">
         <div className="inline-flex items-center gap-2 bg-[#E0F2FE] text-[#0EA5E9] border border-[#BAE6FD] px-4 py-2 rounded-full text-sm font-black uppercase tracking-widest mb-8 shadow-sm">
           <Shield className="h-4 w-4" />
-          EarnSafe
+          EarnSure
         </div>
         <h1 className="text-4xl sm:text-5xl font-black text-[#0C1A2E] mb-6 tracking-tight leading-tight">
           Parametric Insurance <br />
@@ -23,23 +23,44 @@ const Index = () => {
         <p className="text-[16px] font-medium text-[#64748B] mb-10 leading-relaxed max-w-md mx-auto">
           AI-powered, real-time coverage that pays out automatically when disruptions hit — <strong className="text-[#0C1A2E]">no paperwork, no delays.</strong>
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button
-            onClick={() => navigate("/worker")}
-            className="h-14 px-8 bg-[#0EA5E9] text-white hover:bg-[#0284C7] rounded-2xl font-black uppercase tracking-wider shadow-xl shadow-[#0EA5E9]/20 transition-all active:scale-95 flex items-center gap-3"
+            id="get-quote-btn"
+            onClick={() => navigate("/calculator")}
+            className="h-16 px-10 bg-[#0EA5E9] text-white hover:bg-[#0284C7] rounded-3xl font-black uppercase tracking-wider shadow-2xl shadow-[#0EA5E9]/30 transition-all active:scale-[0.98] flex items-center gap-3 animate-pulse-subtle group"
           >
-            <Zap className="h-5 w-5" />
-            Worker App
-            <ArrowRight className="h-5 w-5" />
+            <Zap className="h-6 w-6 fill-white" />
+            Get Free Quote
+            <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform" />
           </Button>
+
+          <div className="flex gap-3">
+            <Button
+              id="worker-join-btn"
+              onClick={() => navigate("/register")}
+              variant="outline"
+              className="h-14 px-6 border-[#BAE6FD] bg-white text-[#0EA5E9] hover:bg-[#F0F9FF] rounded-2xl font-black uppercase tracking-wider shadow-md transition-all active:scale-[0.98]"
+            >
+              Join
+            </Button>
+            <Button
+              id="worker-app-btn"
+              onClick={() => navigate("/worker")}
+              variant="outline"
+              className="h-14 px-6 border-[#E2E8F0] bg-white text-[#64748B] hover:bg-[#F8FAFC] rounded-2xl font-black uppercase tracking-wider shadow-sm transition-all active:scale-[0.98]"
+            >
+              Log In
+            </Button>
+          </div>
+          
           <Button
+            id="admin-dashboard-btn"
             onClick={() => navigate("/admin")}
-            variant="outline"
-            className="h-14 px-8 border-[#BAE6FD] bg-white text-[#0C1A2E] hover:bg-[#F0F9FF] rounded-2xl font-black uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center gap-3"
+            variant="ghost"
+            className="h-14 px-6 text-[#94A3B8] hover:text-[#0C1A2E] hover:bg-[#F1F5F9] rounded-2xl font-bold transition-all active:scale-[0.98] flex items-center gap-2"
           >
             <Users className="h-5 w-5" />
-            Admin Dashboard
-            <ArrowRight className="h-5 w-5" />
+            Admin
           </Button>
         </div>
       </div>
