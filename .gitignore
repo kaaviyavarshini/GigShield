@@ -1,19 +1,45 @@
+# Dependencies
+node_modules
+/backend/venv
+.venv
+env
+venv
+ENV
+env.bak
+venv.bak
+pycache
+*.py[cod]
+*$py.class
+
+# Build outputs
+dist
+dist-ssr
+build
+out
+.next
+.serverless
+
 # Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Environment / Secret
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 *.local
+.gemini
+.bolt
+.workflow
+.agents
 
-# Editor directories and files
-.vscode/*
+# Editor
+.vscode
 !.vscode/extensions.json
 .idea
 .DS_Store
@@ -22,3 +48,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Testing
+coverage/
+.nyc_output/
