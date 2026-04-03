@@ -15,6 +15,7 @@ import AdminChatbot from "./pages/AdminChatbot.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import Register from "./pages/Register.tsx";
 import PremiumCalculator from "./pages/PremiumCalculator.tsx";
+import WorkerDashboard from "./pages/WorkerDashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/calculator" element={<PremiumCalculator />} />
           <Route path="/worker" element={<WorkerView />} />
+          <Route path="/dashboard" element={<WorkerDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/workers" element={<AdminWorkers />} />
           <Route path="/admin/policies" element={<AdminPolicies />} />
