@@ -170,7 +170,7 @@ Your policy is active all week. If it fires, you'll get a WhatsApp immediately."
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514', // Using exact model name from prompt
+            model: 'claude-3-5-sonnet-20241022', // Standard valid model
             max_tokens: 1000,
             system: SYSTEM_PROMPT,
             messages: [

@@ -17,7 +17,6 @@ import Register from "./pages/Register.tsx";
 import PremiumCalculator from "./pages/PremiumCalculator.tsx";
 import WorkerDashboard from "./pages/WorkerDashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import { WorkerChatbot } from "./components/WorkerChatbot";
 
 const queryClient = new QueryClient();
 
@@ -43,7 +42,6 @@ const App = () => (
           <Route path="/admin/chatbot" element={<AdminChatbot />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <WorkerChatbot />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

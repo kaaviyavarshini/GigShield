@@ -83,7 +83,7 @@ app.post('/api/chat', async (req, res) => {
     }
 
     const { model, max_tokens, system, messages } = req.body;
-//... (keep the rest)
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -98,7 +98,7 @@ app.post('/api/chat', async (req, res) => {
         messages
       })
     });
-//...
+
     if (!response.ok) {
       const errorData = await response.json();
       console.error("Anthropic API error:", errorData);
