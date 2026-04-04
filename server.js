@@ -68,6 +68,51 @@ app.post('/api/check-road-risk', async (req, res) => {
   }
 });
 
+app.post('/api/chat', async (req, res) => {
+  try {
+    const apiKey = process.env.ANTHROPIC_API_KEY || 
+                   process.env.ANTHROPIC_KEY || 
+                   process.env.VITE_ANTHROPIC_API_KEY ||
+                   process.env.CLAUDE_API_KEY ||
+                   process.env.AI_API_KEY;
+    
+    if (!apiKey) {
+      const allKeys = Object.keys(process.env);
+      console.error("No Anthropic API key found. Available keys:", allKeys.filter(k => !k.includes('SESSION') && !k.includes('TOKEN')));
+      return res.status(500).json({ error: "Missing Anthropic API key in environment" });
+    }
+
+    const { model, max_tokens, system, messages } = req.body;
+//... (keep the rest)
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens,
+        system,
+        messages
+      })
+    });
+//...
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Anthropic API error:", errorData);
+      return res.status(response.status).json(errorData);
+    }
+
+    const data = await response.json();
+    return res.json(data);
+  } catch (error) {
+    console.error("Error in /api/chat:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Backend server listening on port ${PORT}`);
 });
