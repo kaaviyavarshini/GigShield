@@ -50,7 +50,8 @@ export function ClaimDetailPanel({ claim, onApprove, onReject }: ClaimDetailPane
     setIsCheckingRisk(true);
     setRiskLevel(null);
     try {
-      const res = await fetch('/api/check-road-risk', {
+      const baseUrl = import.meta.env.VITE_API_URL || '';
+      const res = await fetch(`${baseUrl}/api/check-road-risk`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ track: [{ lat: 12.9716, lon: 77.5946, dt: Math.floor(Date.now() / 1000) }] })

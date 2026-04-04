@@ -162,8 +162,9 @@ Your policy is active all week. If it fires, you'll get a WhatsApp immediately."
 `;
 
       // 4. Call Claude API via server proxy
+      const baseUrl = import.meta.env.VITE_API_URL || '';
       const response = await fetch(
-        '/api/chat',
+        `${baseUrl}/api/chat`,
         {
           method: 'POST',
           headers: { 

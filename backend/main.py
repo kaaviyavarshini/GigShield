@@ -103,3 +103,9 @@ async def get_city_aqi(city: str):
             return response.json()
         except Exception as e:
             return {"error": str(e), "results": []}
+
+if __name__ == "__main__":
+    import uvicorn
+    # Vercel and other cloud providers set the PORT environment variable
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
