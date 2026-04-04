@@ -1178,19 +1178,16 @@ const Register: React.FC = () => {
             plan_type: plan.id === "premium" ? "Gold" : "Silver",
           });
 
+          const endDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+          
           const { error } = await supabase.from("policies").insert({
             worker_id: newWorkerId, // Link to worker
-            worker_name: name,
-            phone: `+91${phone}`,
-            city,
-            policy_number: polNum,
-            platform: platforms.join(", "),
-            plan_type: selectedPlan,
-            weekly_premium: plan.price,
-            upi_id: upiId,
             status: "active",
-            created_at: now.toISOString(),
-            coverage_start: covStart,
+            weekly_premium: plan.price,
+            coverage_amount: plan.maxPayout,
+            week_start: covStart,
+            week_end: endDate.toISOString(),
+            created_at: now.toISOString()
           });
 
           if (error) throw error;
