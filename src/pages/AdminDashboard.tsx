@@ -16,6 +16,7 @@ import { WeatherWidget } from "@/components/WeatherWidget";
 import { DisruptionMap } from "@/components/DisruptionMap";
 import { PayoutExplainer } from "@/components/PayoutExplainer";
 import { LivePayoutCounter } from "@/components/LivePayoutCounter";
+import { LiveWeatherWidget } from "@/components/admin/claims/LiveWeatherWidget";
 
 const AdminDashboard = () => {
   const [metrics, setMetrics] = useState<AdminMetrics>({
@@ -206,6 +207,10 @@ const AdminDashboard = () => {
           <div className="space-y-4">
             <h2 className="text-[16px] font-semibold text-[#1E293B]">Air Quality Monitor</h2>
             <AQIWidget city={selectedCity} policyId={selectedPolicyId} />
+          </div>
+
+          <div className="space-y-4">
+            <LiveWeatherWidget />
           </div>
         </div>
       </div>

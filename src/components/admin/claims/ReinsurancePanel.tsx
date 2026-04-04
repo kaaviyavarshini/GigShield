@@ -82,9 +82,8 @@ export function ReinsurancePanel({ claims }: { claims: RichClaim[] }) {
                     <td className="px-3 py-2.5 text-[#64748B]">{claim.zone}</td>
                     <td className="px-3 py-2.5 font-mono-data font-bold text-[#0F172A]">₹{formatIndianNumber(claim.payout_amount)}</td>
                     <td className="px-3 py-2.5">
-                      <span className={`inline-flex px-2 py-0.5 rounded-full text-[9px] font-bold ${
-                        claim.status === 'paid' ? 'bg-[#DCFCE7] text-[#16A34A]' : 'bg-[#F0F9FF] text-[#0EA5E9]'
-                      }`}>
+                      <span className={`inline-flex px-2 py-0.5 rounded-full text-[9px] font-bold ${claim.status === 'paid' ? 'bg-[#DCFCE7] text-[#16A34A]' : 'bg-[#F0F9FF] text-[#0EA5E9]'
+                        }`}>
                         {claim.status === 'paid' ? 'Paid' : 'Approved'}
                       </span>
                     </td>

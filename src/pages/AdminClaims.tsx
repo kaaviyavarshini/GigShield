@@ -8,6 +8,7 @@ import { ClaimsStatCards } from "@/components/admin/claims/ClaimsStatCards";
 import { ClaimsQueueTable } from "@/components/admin/claims/ClaimsQueueTable";
 import { ClaimDetailPanel } from "@/components/admin/claims/ClaimDetailPanel";
 import { ClaimsAnalytics } from "@/components/admin/claims/ClaimsAnalytics";
+import { LiveWeatherWidget } from "@/components/admin/claims/LiveWeatherWidget";
 import { ReinsurancePanel } from "@/components/admin/claims/ReinsurancePanel";
 import { generateMockClaims, getClaimsSummary } from "@/components/admin/claims/mockClaimsData";
 import type { RichClaim, ClaimsFilter } from "@/components/admin/claims/types";
@@ -106,11 +107,10 @@ export default function AdminClaims() {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-5 py-2 rounded-lg text-[12px] font-semibold transition-all ${
-              activeTab === tab.key
+            className={`px-5 py-2 rounded-lg text-[12px] font-semibold transition-all ${activeTab === tab.key
                 ? 'bg-white text-[#0F172A] shadow-sm'
                 : 'text-[#64748B] hover:text-[#334155]'
-            }`}
+              }`}
           >
             {tab.label}
           </button>
@@ -141,6 +141,7 @@ export default function AdminClaims() {
                   falsePositiveRate={summary.falsePositiveRate}
                 />
                 <RingAlert claims={claims} />
+                <LiveWeatherWidget />
                 <ClaimsFilters filters={filters} onChange={setFilters} cities={cities} />
               </div>
 
@@ -185,9 +186,10 @@ export default function AdminClaims() {
               </div>
             )}
 
-            {/* Mobile: Filters */}
+            {/* Mobile: Filters & Weather */}
             <div className="lg:hidden mt-6 space-y-4">
               <LossRatioGauge lossRatio={summary.lossRatio} totalPremiums={summary.totalPremiums} totalPayouts={summary.totalPayouts} netPosition={summary.netPosition} />
+              <LiveWeatherWidget />
               <ClaimsFilters filters={filters} onChange={setFilters} cities={cities} />
             </div>
           </motion.div>

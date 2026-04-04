@@ -73,11 +73,10 @@ export function ClaimsFilters({ filters, onChange, cities }: ClaimsFiltersProps)
           {DATE_OPTIONS.map(o => (
             <button
               key={o.value}
-              className={`flex-1 px-2 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
-                filters.date_range === o.value
+              className={`flex-1 px-2 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${filters.date_range === o.value
                   ? 'bg-[#0EA5E9] text-white shadow-sm'
                   : 'bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0]'
-              }`}
+                }`}
               onClick={() => update({ date_range: o.value as any })}
             >
               {o.label}

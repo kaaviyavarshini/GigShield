@@ -43,6 +43,30 @@ export function ClaimDetailPanel({ claim, onApprove, onReject }: ClaimDetailPane
   const [rejectOpen, setRejectOpen] = useState(false);
   const [rejectReason, setRejectReason] = useState(REJECTION_REASONS[0]);
   const [tooltip, setTooltip] = useState<string | null>(null);
+  const [riskLevel, setRiskLevel] = useState<string | null>(null);
+  const [isCheckingRisk, setIsCheckingRisk] = useState(false);
+
+  const checkRoadRisk = async () => {
+    setIsCheckingRisk(true);
+    setRiskLevel(null);
+    try {
+      const res = await fetch('/api/check-road-risk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ track: [{ lat: 12.9716, lon: 77.5946, dt: Math.floor(Date.now() / 1000) }] })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setRiskLevel(data.riskLevel);
+      } else {
+        setRiskLevel('error');
+      }
+    } catch {
+      setRiskLevel('error');
+    }
+    setIsCheckingRisk(false);
+  };
+
 
   if (!claim) {
     return (
@@ -175,6 +199,28 @@ export function ClaimDetailPanel({ claim, onApprove, onReject }: ClaimDetailPane
           <p className={`text-[10px] mt-2 font-semibold ${Number(freqPct) > 50 ? 'text-[#DC2626]' : 'text-[#16A34A]'}`}>
             {Number(freqPct) > 50 ? `Claim frequency ${(claimFreq / zoneAvg).toFixed(1)}x above zone average` : 'No suspicious patterns detected in this worker\'s history'}
           </p>
+
+          <div className="mt-4 pt-3 border-t border-[#E2E8F0] space-y-2">
+            <h4 className="text-[12px] font-bold text-[#0F172A]">Real-time Route Risk</h4>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={checkRoadRisk}
+                disabled={isCheckingRisk}
+                className="px-3 py-1.5 bg-[#F8FAFC] border border-[#E2E8F0] text-[11px] font-bold text-[#0F172A] rounded-md hover:bg-[#F1F5F9] transition-colors disabled:opacity-50"
+              >
+                {isCheckingRisk ? 'Checking...' : 'Check risk for worker'}
+              </button>
+              {riskLevel && (
+                <div className="flex items-center gap-1.5 text-[11px] font-bold">
+                  {riskLevel === 'high' ? <span className="text-[#DC2626] flex items-center gap-1"><AlertTriangle size={12} /> High Risk Route</span> :
+                    riskLevel === 'medium' ? <span className="text-[#D97706] flex items-center gap-1"><AlertTriangle size={12} /> Medium Risk</span> :
+                      riskLevel === 'low' ? <span className="text-[#16A34A] flex items-center gap-1"><CheckCircle2 size={12} /> Low Risk Route</span> :
+                        <span className="text-[#94A3B8]">Failed to check API</span>}
+                </div>
+              )}
+            </div>
+            <p className="text-[9px] text-[#94A3B8]">Queries OpenWeather API without exposing key</p>
+          </div>
         </div>
 
         {/* Section 5 — Resolution Actions */}
